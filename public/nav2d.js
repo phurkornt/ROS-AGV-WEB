@@ -107,6 +107,7 @@ NAV2D.Navigator = function(a) {
                     }
                 }
             });
+            
             b.send();
             
             b.on("result", function() {
