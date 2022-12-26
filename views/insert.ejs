@@ -1,0 +1,109 @@
+<%- include("partials/header") %>
+
+  <div class="container mt-3">
+
+    <div class="row">
+      
+      <div class="col-lg-6 col-md-6 ">
+        <div class="card mt-3"  >
+
+            <div class="card-body">
+              <h5 class="card-title text-center">Insert Data</h5>
+             
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Name </span>
+                    <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="name">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1" >Color </span>
+                    <input type="color" style="height: 38px;" class="form-control "  aria-label="Username" aria-describedby="basic-addon1" name="color">
+                </div>
+                
+                </div>  
+                <button class="btn btn-success p-3 mt-1 ps-5 pe-5" onclick="insert_to_db()" >Save</button>
+
+
+
+        </div>
+        
+
+
+
+      </div>
+
+      <div class="col-lg-6 col-md-6">
+        <div id="nav" style="text-align: center;" class="mt-3"></div>
+      </div>
+
+      
+    </div>
+
+
+
+
+<!-- document.querySelector("canvas").click() -->
+
+
+
+
+  </div>
+
+
+
+
+  <script src="page_nav_map.js"></script>
+
+  <script src="axios/axios.min.js"></script>
+
+  
+  <script>
+
+    insert();
+
+    function insert_to_db(){
+        let name = document.querySelector("input[name=name]").value;
+        let color = document.querySelector("input[name=color]").value;
+        let pos = get_insert_pos
+        
+        // check
+        if(name == "" ||  pos == undefined){
+            alert("input all data");
+        }else{
+            // use axios
+
+            let params =new URLSearchParams();
+
+
+            pos_tranfrom = JSON.stringify({pos:pos})
+            // console.log("BE",pos_tranfrom);
+            params.append('name',name);
+            params.append('color',color);
+            params.append('pos',pos_tranfrom);
+
+            axios({
+                url:'/insert',
+                method:'post',
+                data:params,
+                timeout:3000
+            }).then((result)=>{
+                alert("Insert Done !");
+                window.location="/";
+                console.log("insert DONE !");
+            })
+        }
+
+        console.log(name);
+        console.log(color);
+        console.log(pos);
+
+    }
+
+
+  </script>
+
+
+
+<%- include("partials/footer") %> 
+
+

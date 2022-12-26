@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+
+<script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+<script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+
+<script type="text/javascript" type="text/javascript">
+  // Connecting to ROS
+  // -----------------
+
+  var ros = new ROSLIB.Ros({
+    url : 'ws://localhost:9090'
+  });
+
+  ros.on('connection', function() {
+    console.log('Connected to websocket server.');
+  });
+
+  ros.on('error', function(error) {
+    console.log('Error connecting to websocket server: ', error);
+  });
+
+  ros.on('close', function() {
+    console.log('Connection to websocket server closed.');
+  });
+
+
+  var actionClient = new ROSLIB.ActionClient({
+    ros : ros,
+    serverName : '/move_base',
+    actionName : 'move_base_msgs/MoveBaseAction'
+  });
+
+  
+  var positionVec3 = new ROSLIB.Vector3(null);
+  var orientation = new ROSLIB.Quaternion({x:0, y:0, z:0, w:1.0});
+  
+  positionVec3.x = 18.0;
+  positionVec3.y = 18.0;
+
+  var pose = new ROSLIB.Pose({
+    position : positionVec3,
+    orientation : orientation
+  });
+
+  var goal = new ROSLIB.Goal({
+      actionClient : actionClient,
+      goalMessage : {
+        target_pose : {
+          header : {
+            frame_id : 'map'
+          },
+          pose : pose
+        }
+      }
+    });
+
+
+  /**
+   * Send a goal to the navigation stack with the given pose.
+   *
+   */
+  function sendGoal() {
+    console.log("send goal");
+    goal.send();
+  }
+
+
+  function cancelGoal() {
+    // cancel the current goal
+    goal.cancel();
+  }
+
+
+  // Monitoring /move_base/result
+  var move_baseListener = new ROSLIB.Topic({
+    ros : ros,
+    name : '/move_base/result',
+    messageType : 'move_base_msgs/MoveBaseActionResult'
+  });
+        
+  move_baseListener.subscribe(function(actionResult) {
+    console.log('Received message on ' + move_baseListener.name + 'status: ' + actionResult.status.status);
+    alert("in callback of /move_base/result");
+    // actionResult.status.status == 2 (goal cancelled)
+    // actionResult.status.status == 3 (goal reached)
+//    move_baseListener.unsubscribe();
+  });
+
+
+</script>
+</head>
+
+<body>
+  <h1>Simple roslib Example</h1>
+  <p>Check your Web Console for output.</p>
+  <button type="button"  onclick="sendGoal()">sendGoal</button>
+  <button type="button"  onclick="cancelGoal()">cancelGoal</button>
+</body>
+</html>

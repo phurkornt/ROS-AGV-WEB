@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+
+<script src="https://static.robotwebtools.org/EaselJS/current/easeljs.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/eventemitter2@6.4/lib/eventemitter2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js"></script>
+<script src="ros2d.js"></script>
+
+</head>
+
+<body>
+  <h1>Continuous Map Example</h1>
+  <p>
+    Use any method to publish continuous updates to topic /map and use this page to visualize updates. Follow these commands:
+  </p>
+  <ol>
+    <li><tt>roscore</tt></li>
+    <li><tt>(method of choice to publish to /map)</tt></li>
+    <li><tt>roslaunch rosbridge_server rosbridge_websocket.launch</tt></li>
+  </ol>
+  <div id="map"></div>
+  
+  <script src="scan_map.js"></script>
+</body>
+
+</html>

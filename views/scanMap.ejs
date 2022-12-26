@@ -1,0 +1,62 @@
+<%- include("partials/header") %> 
+
+<div class="container mt-3">
+    <h1 class="center">Connection status: <span id="status"></span></h1>
+    <div class="row">
+      
+        <div class="col-lg-6 col-md-6 ">
+
+
+            <div class="card mt-3"  >
+                <div class="card-body">
+                    <h5 class="card-title">Movement</h5>
+                    
+
+                <form action="/launch_slam" method="post" class="">
+                    <button type="submit" class="btn btn-danger">Make map</button>
+                </form>
+
+                
+                <!-- for save map in file with input name and button  -->
+                <form action="/saver" method="post" >
+                    <span>Map name : </span>
+                    <input type="text" name="map_name" placeholder="" >
+                    <button type="submit" class="btn btn-success ">save</button>
+                </form>
+
+                
+                    <p id="zone_joystick" style ="margin-top: 90px;padding-bottom: 50px;"></p>
+                    
+                    
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+
+        <div class="col-lg-6 col-md-6">
+            <div id="map" class="center"></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+    
+
+<script src="page_scanMap.js"></script>
+
+
+
+
+
+
+
+
+
+
+<%- include("partials/footer") %> 

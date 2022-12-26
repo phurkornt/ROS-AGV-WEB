@@ -1,0 +1,85 @@
+<%- include("partials/header") %>
+
+  <div class="container mt-3">
+
+    <div class="row">
+      
+      <div class="col-lg-6 col-md-6 ">
+        <div class="card mt-3"  >
+          <div class="card-body">
+            <h5 class="card-title">Configure</h5>
+            <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> -->
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+            <button class="btn btn-success p-2 mt-2 float-end"> insert</button>
+            <table class="table table-striped mt-2 border-top ">
+              <thead class="thead-dark">
+                  <tr><th scope="col">Posname</th><th scope="col">Config</th></tr>
+              </thead>
+              <tbody>
+                  
+                  <%  for(let i =0 ;i<data.length;i++){ %>
+                  <tr>
+                      <td><%= data[i].name%></td>
+                      <td>
+                          <button class="btn btn-warning btn-sm" data-toggle="modal"  >EDIT</button>
+                          <form action="/delete" method="post" class="d-inline pw-3">
+                              <button class="btn btn-danger btn-sm" onchange="this.form.submit()"  name="delete" value="<%= data[i]._id _%>, ">Delete</button>
+                          </form>
+                          
+                      </td>
+                      <%} %>
+                  </tr>
+              </tbody>
+          </table>
+
+          </div>    
+        </div>
+        
+
+      <button class="btn btn-danger p-3 mt-1 ps-5 pe-5" onclick="moveTopoint(1)">Control Move</button>
+
+      </div>
+
+      <div class="col-lg-6 col-md-6">
+        <div id="nav" style="text-align: center;" class="mt-3"></div>
+      </div>
+
+      
+    </div>
+
+
+
+
+<!-- document.querySelector("canvas").click() -->
+
+
+
+
+  </div>
+
+
+
+
+  <script src="page_nav_map.js"></script>
+  <script>
+
+    var str =  '<%- JSON.stringify(data)%>';
+    str = str.replace(/'/g, '"')
+    obj = JSON.parse(str);
+    // console.log(obj);
+    run_function(obj);
+
+    function moveTopoint(pos){
+      window.location="/navigation/move/1";
+    }
+
+
+  </script>
+
+
+
+  <!-- <script src="nav2d.js"></script> -->
+
+<%- include("partials/footer") %> 
+
+
