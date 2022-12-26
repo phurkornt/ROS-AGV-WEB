@@ -1,6 +1,7 @@
 let control_mode = "";
 let posNext ;
 let posSet;
+let posCon;
 
 var counter = 0 ;
 var isRun = false;
@@ -16,7 +17,9 @@ let insert_pos;
 let get_insert_pos;
 /*  Zone Insert */
 
+/*  Zone Pause */
 
+/*  Zone Pause */
 
 
 var POSITION = [{
@@ -90,9 +93,9 @@ NAV2D.Navigator = function(a) {
         
     }
     function move_maker(){
-        // console.log("WOW" ,posNext)
+        // console.log("function Move_maker on ")
         if( posNext-1 < posSet.length ){
-            console.log("WOW" ,posSet.length)
+            // console.log("WOW" ,posSet.length)
 
             
             let posNow = posSet[ posNext-1 ].pos;
@@ -107,16 +110,51 @@ NAV2D.Navigator = function(a) {
                     }
                 }
             });
+
+            // name="tostop"
             
             b.send();
+            let moveStop = false;
+
+            let pause = document.querySelector("button[name=topause]")
+            pause.addEventListener('click',()=>{
+                if(pause.innerText == 'Pause'){
+                    pause.classList.remove('btn-warning');
+                    pause.classList.add('btn-success')
+                    pause.innerText = 'Go';
+                    b.cancel();
+                    moveStop = true;
+                    
+                }else if(pause.innerText == 'Go'){
+                    pause.classList.remove('btn-success');
+                    pause.classList.add('btn-warning')
+                    pause.innerText = 'Pause';
+                    window.location="/navigation";
+                }
+         
+            })
+
+            
+            document.querySelector("button[name=tostop]").addEventListener('click',()=>{
+                // console.log("WWW");
+                b.cancel();
+                moveStop = true;
+                window.location="/navigation/move/0";
+            })
             
             b.on("result", function() {
-                console.log("DONE POS : "+posNext);
-                if( posNext - posSet.length == 0 ){
-                    window.location="/navigation/move/0";
+                if(moveStop == true){
+
                 }else{
-                    window.location="/navigation/move/"+(posNext+1);
+                    console.log("DONE POS : "+posNext);
+                    // alert("FDSFSF")
+                    if( posNext - posSet.length == 0 ){
+                        window.location="/navigation/move/0";
+                    }else{
+                        window.location="/navigation/move/"+(posNext+1);
+                    }
                 }
+                
             })
         }
     }
@@ -330,7 +368,10 @@ NAV2D.OccupancyGridClientNav = function(a) {
     console.log("DATA",posSet);
 
     posNext = a.posNext
-    console.log(posNext);
+    console.log("POS NEXT : ",posNext);
+
+    posCon = a.posCon;
+    console.log("POS Con : ",posCon);
 
 
 

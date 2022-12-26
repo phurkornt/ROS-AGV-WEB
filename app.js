@@ -81,11 +81,10 @@ app.get('/navigation',(req,res)=>{
 
 app.get('/navigation/move/:pos',(req,res)=>{
     NOWPOS= req.params.pos;
-    if( dataset.length < NOWPOS)NOWPOS = 0;
+    console.log("nowpos : ",NOWPOS);
+    // if( dataset.length < NOWPOS)NOWPOS = 0;
     res.redirect('/navigation')
     // res.render("navMoving",{data:dataset,posNow:pos})
-
-    // console.log("HI"+id);
 });
 
 

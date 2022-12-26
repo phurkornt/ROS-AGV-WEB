@@ -37,7 +37,7 @@
                         <td>
                             <button class="btn btn-warning btn-sm" data-toggle="modal"  >EDIT</button>
                             <form action="/delete" method="post" class="d-inline pw-3">
-                                <button class="btn btn-danger btn-sm" onclick="delect()"  name="delete" value="<%= data[i]._id _%>">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return delect()"  name="delete" value="<%= data[i]._id _%>">Delete</button>
                             </form>
                             
                         </td>
@@ -56,10 +56,12 @@
             <!-- <p class="card-text"></p> -->
 
           </div>  
-          <button class="btn btn-warning p-3 mt-1 ps-5 pe-5" onclick="">Pause</button>
-          <button class="btn btn-danger p-3 mt-1 ps-5 pe-5" onclick="">Stop</button>
-          
 
+          <button class="btn btn-warning p-3 mt-1 ps-5 pe-5 " name="topause" onclick="">Pause</button>
+
+          <button class="btn btn-danger p-3 mt-1 ps-5 pe-5" name="tostop" onclick="">Stop</button>
+          
+          <div class="mb-5"></div>
 
 
          <% }%>
@@ -100,19 +102,23 @@
     obj = JSON.parse(str);
 
     if(pos === 0){
+      // console.log("NOT AGAIN");
       show_pos(obj);
     }else{
-      move_to_pos( obj , pos );
+      // console.log("MOVE AGAIN");
+      move_to_pos( obj , {pos:pos,con:"move"} );
     }
-   
+    
+    
+      
 
     function moveTopoint(pos){
       window.location="/navigation/move/1";
     }
+
     function delect(){
-      if( confirm("Are you confirm !") == true ){
-        this.form.submit();
-      }
+      return confirm("Are you confirm !");
+      
     }
 
 

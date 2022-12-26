@@ -2,7 +2,7 @@
 
     // Connect to ROS.
     var ros = new ROSLIB.Ros({
-      url : 'ws://localhost:9090'
+      url : 'ws://192.168.1.6:9090'
     });
 
     // Create the main viewer.
@@ -45,6 +45,7 @@
       });
     }
     
+
     function move_to_pos(data,pos){
       var nav = NAV2D.OccupancyGridClientNav({
         topic:'nn',
@@ -54,6 +55,32 @@
         serverName:'move_base',
         withOrientation:true,
         posSet:data,
-        posNext:pos
+        posNext:pos.pos,
+        posCon:pos.con
       });
     }
+
+
+
+    // var listener = new ROSLIB.Topic({
+    //    ros : ros,
+    //    name : '/phu',
+    //    messageType : 'std_msgs/String'
+    //  });
+   
+    //  listener.subscribe(function(message) {
+    //    console.log('Received message on ' + listener.name + ': ' + message.data);
+    //    listener.unsubscribe();
+    //  });  
+
+    // var listener = new ROSLIB.Topic({
+    //   ros : ros,
+    //   name : '/robot_pose',
+    //   messageType : 'geometry_msgs/Pose'
+    // });
+  
+    // listener.subscribe(function(message) {
+    //   console.log('Received message on ' + ': ' + message);
+    //   listener.unsubscribe();
+    // });
+  
