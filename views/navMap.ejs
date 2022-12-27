@@ -10,7 +10,10 @@
           <% if (  posNow == 0 ) { %>
             <div class="card-body">
               <h5 class="card-title">Configure</h5>
+              
               <a href="/insert" class="btn btn-success p-2 mt-2 float-end" >insert</a>
+
+
               <table class="table table-striped mt-2 border-top ">
                 <thead class="thead-dark">
                     <tr><th scope="col">Posname</th><th scope="col">Color</th><th scope="col">Config</th></tr>
@@ -21,14 +24,16 @@
                     <tr>
                         <td><%= data[i].name%></td>
                         <td>
-                          <!-- <p ><%= data[i].color %></p> -->
                           <input type="color" name="" id="" value="<%= data[i].color _%>" disabled>
                         </td>
                         <td>
-                            <button class="btn btn-warning btn-sm" data-toggle="modal"  >EDIT</button>
-                            <form action="/delete" method="post" class="d-inline pw-3">
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return delect()"  name="delete" value="<%= data[i]._id _%>">Delete</button>
-                            </form>
+                            
+                          <a href="/update?id=<%= data[i]._id _%>" class="btn btn-warning py-1 " >EDIT</a>
+
+                          <form action="/delete" method="post" class="d-inline pw-3">
+                              <button type="submit" class="btn btn-danger btn-sm" onclick="return delect()"  name="delete" value="<%= data[i]._id _%>">Delete</button>
+                          </form>
+
                         </td>
 
                     <%} %>

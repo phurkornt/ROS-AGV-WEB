@@ -149,6 +149,43 @@ app.post('/delete',(req,res)=>{
 
 /* -----------------------  delect  ------------------------ */
 
+
+
+/* -----------------------  update  ------------------------ */
+
+app.post('/update',(req,res)=>{
+    
+    let posi = JSON.parse(req.body.pos)
+    let id =req.body.id;
+    let doc ={
+        name:req.body.name,
+        pos: posi.pos,
+        color:req.body.color
+    }
+    // JSON.parse(req.body.pos)
+    model.findByIdAndUpdate( id , doc , function(err){
+        if(!err){
+            // console.log("Done Save");
+            res.send({state:1});
+        }
+    });
+
+})
+app.get('/update',(req,res)=>{
+    let id = req.query.id;
+    model.findById(id,function(err,doc){
+        if(!err){
+            // console.log(doc);
+            res.render("update",{data:doc});
+        }
+    })
+})
+
+
+/* -----------------------  update  ------------------------ */
+
+
+
  
 app.listen( process.env.PORT || 3000,()=>{
     console.log('Server is running ...');

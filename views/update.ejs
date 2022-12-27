@@ -8,19 +8,33 @@
         <div class="card mt-3"  >
 
             <div class="card-body">
-              <h5 class="card-title text-center">Insert Data</h5>
+              <h5 class="card-title text-center">Update Data</h5>
              
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Name </span>
-                    <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="name">
+                    <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="name" value="<%= data.name _%> ">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1" >Color </span>
-                    <input type="color" style="height: 38px;" class="form-control "  aria-label="Username" aria-describedby="basic-addon1" name="color">
+                    <input type="color" style="height: 38px;" class="form-control "  aria-label="Username" aria-describedby="basic-addon1" name="color" value="<%= data.color _%>" >
+                </div>
+                
+                <div class="row mb-2">
+                  <div class="d-grid col-4">
+                    <a href="/"  class="btn btn-secondary p-3 px-5 " >Cancle</a>
+                  </div>
+                  <div class="d-grid col-8">
+                    <button class="btn btn-success p-3 " onclick="update_into_db()" >Save</button>
+                  </div>
+
                 </div>
                 
                 </div>  
-                <button class="btn btn-success p-3 mt-1 ps-5 pe-5" onclick="insert_to_db()" >Save</button>
+
+                
+                
+
+                
 
         </div>
       
@@ -43,10 +57,13 @@
 
   
   <script>
+    var str =  '<%- JSON.stringify(data)%>';
+    str = str.replace(/'/g, '"')
+    obj = JSON.parse(str);
 
-    insert();
+    update(obj);
 
-    function insert_to_db(){
+    function update_into_db(){
         let name = document.querySelector("input[name=name]").value;
         let color = document.querySelector("input[name=color]").value;
         let pos = get_insert_pos
@@ -59,19 +76,20 @@
             let params =new URLSearchParams();
             pos_tranfrom = JSON.stringify({pos:pos})
             // console.log("BE",pos_tranfrom);
+            params.append('id','<%- data._id %>');
             params.append('name',name);
             params.append('color',color);
             params.append('pos',pos_tranfrom);
 
             axios({
-                url:'/insert',
+                url:'/update',
                 method:'post',
                 data:params,
                 timeout:3000
             }).then((result)=>{
-                alert("Insert Done !");
+                alert("Update Done !");
                 window.location="/";
-                console.log("insert DONE !");
+                console.log("Update DONE !");
             })
         }
 

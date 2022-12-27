@@ -61,6 +61,7 @@ NAV2D.ImageMapClientNav = function(a) {
 ,
 NAV2D.Navigator = function(a) {
     function show_maker(){
+        
         // console.log("Show : maker ",posSet[1].color)
         function hexToRgb(hex) {
             var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -157,6 +158,72 @@ NAV2D.Navigator = function(a) {
                 
             })
         }
+    }
+
+    function show_makerOne(){
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+              r: parseInt(result[1], 16),
+              g: parseInt(result[2], 16),
+              b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        let posNow = posSet.pos;
+
+        let rgb = hexToRgb(posSet.color);
+
+        var d = new ROS2D.NavigationArrow({
+            size: 0.8,
+            strokeSize: 0.05,
+            fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
+            pulse: !0
+        });
+    
+        d.x = posNow.position.x,
+        d.y = -posNow.position.y,
+        d.rotation = h.rosQuaternionToGlobalTheta(posNow.orientation),
+        d.scaleX = 1 / h.scaleX,
+        d.scaleY = 1 / h.scaleY,
+        c.rootObject.addChild(d)
+        
+    }
+    function update(a) {
+        // For update pos to db
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+              r: parseInt(result[1], 16),
+              g: parseInt(result[2], 16),
+              b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        if( insert_pos !=undefined ){
+            c.rootObject.removeChild(insert_pos)
+        }
+        
+       
+        let rgb = hexToRgb(document.querySelector("input[type=color]").value);
+        var d = new ROS2D.NavigationArrow({
+            size: 16,
+            strokeSize: 0.8,
+            fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
+            pulse: !0
+        });
+
+        d.x = a.position.x,
+        d.y = -a.position.y,
+        d.rotation = h.rosQuaternionToGlobalTheta(a.orientation),
+        d.scaleX = 1 / h.scaleX,
+        d.scaleY = 1 / h.scaleY,
+        
+        insert_pos = d;
+        c.rootObject.addChild(insert_pos)
+
+        // global Data
+        get_insert_pos = a;
     }
 
     function insert(a) {
@@ -311,6 +378,8 @@ NAV2D.Navigator = function(a) {
 
                 if( control_mode =="insert"){
                     insert(u);
+                }else if( control_mode =="update"){
+                    update(u);
                 }
 
                 
@@ -319,12 +388,14 @@ NAV2D.Navigator = function(a) {
             
             
         };
-        // insert(u);
-        if( control_mode !="insert"){
+
+        if( control_mode !="insert" && control_mode !="update"){
             show_maker();
         }
-        // show_maker();
-
+        if (control_mode =="update"){
+            show_makerOne();
+        }
+        
         if( posNext > 0 ){
             move_maker();
         }
@@ -361,8 +432,6 @@ NAV2D.OccupancyGridClientNav = function(a) {
     this.withOrientation = a.withOrientation || !1,
     this.navigator = null;
     
-    
-
 
     posSet = a.posSet
     console.log("DATA",posSet);

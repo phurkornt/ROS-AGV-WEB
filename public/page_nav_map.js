@@ -24,6 +24,20 @@
         withOrientation:true,
       });
     }
+    function update(data){
+      // For insert position in db
+      var nav = NAV2D.OccupancyGridClientNav({
+        topic:'update',
+        ros : ros,
+        rootObject : viewer.scene,
+        viewer : viewer,
+        serverName:'move_base',
+        withOrientation:true,
+        posSet:data
+      });
+
+    }
+
     function show_pos(data){
       // For show position 
       var nav = NAV2D.OccupancyGridClientNav({
