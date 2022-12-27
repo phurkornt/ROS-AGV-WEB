@@ -1,8 +1,13 @@
 
+    // get ip
+    let ip =document.getElementById("ip");
+    ip = ip.innerText;
+
 
     // Connect to ROS.
     var ros = new ROSLIB.Ros({
-      url : 'ws://localhost:9090'
+      // url : 'ws://localhost:9090'
+      url : 'ws://'+ip+':9090'
     });
 
     // Create the main viewer.
@@ -11,7 +16,6 @@
       width : 600,
       height : 600
     });
-
 
     function insert(){
       // For insert position in db
@@ -41,7 +45,7 @@
     function show_pos(data){
       // For show position 
       var nav = NAV2D.OccupancyGridClientNav({
-        topic:'nn',
+        topic:'show',
         ros : ros,
         rootObject : viewer.scene,
         viewer : viewer,
@@ -55,7 +59,7 @@
     function move_to_pos(data,pos){
       // For move position 
       var nav = NAV2D.OccupancyGridClientNav({
-        topic:'nn',
+        topic:'show',
         ros : ros,
         rootObject : viewer.scene,
         viewer : viewer,

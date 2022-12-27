@@ -389,7 +389,7 @@ NAV2D.Navigator = function(a) {
             
         };
 
-        if( control_mode !="insert" && control_mode !="update"){
+        if( control_mode =="show"){
             show_maker();
         }
         if (control_mode =="update"){
@@ -418,7 +418,7 @@ NAV2D.OccupancyGridClientNav = function(a) {
 
     // for control mode 
     control_mode = a.topic || "";
-
+    // console.log('control_mode',control_mode);
 
     var b = this;
 

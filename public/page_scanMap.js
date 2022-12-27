@@ -1,6 +1,10 @@
+let ip =document.getElementById("ip");
+ip = ip.innerText;
+
+
 var ros = new ROSLIB.Ros({
     // url : 'ws://localhost:9090'
-    url : 'ws://localhost:9090'
+    url : 'ws://'+ip+':9090'
   });
 
 // Create the main viewer.
@@ -9,12 +13,14 @@ var ros = new ROSLIB.Ros({
   width : 600,
   height : 600
 });
+
 var gridClient = new ROS2D.OccupancyGridClient({
     ros : ros,
     rootObject : viewer.scene,
     // Use this property in case of continuous updates
     continuous: true
-  });
+});
+
   // Scale the canvas to fit to the map
   gridClient.on('change', function() {
     viewer.scaleToDimensions(gridClient.currentGrid.width, gridClient.currentGrid.height);

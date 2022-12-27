@@ -18,6 +18,9 @@ app.use(express.static("public"));
 app.use('/axios',express.static("node_modules/axios/dist/"));
 app.use(bodyParser.urlencoded({extended:true}));
 
+
+
+
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://127.0.0.1/robot',(err)=>{
     if(!err)console.log("connect");
@@ -46,20 +49,24 @@ let dataset =[{name:"Position 1",pos:{orientation:  {x: 0, y: 0, z: 0.9946229901
 //     console.log(err);
 // })
     
-    
+const os = require('os');
+let get_ip = os.networkInterfaces();
+get_ip = get_ip.wlp0s20f3[0].address;
+
+
 
 app.get('/',(req,res)=>{
     res.redirect('/navigation')
     // res.render("scanMap");
 });
 app.get('/slam',(req,res)=>{
-    res.render("scanMap");
+    res.render("scanMap",{ip:get_ip});
 });
 app.get('/navigation',(req,res)=>{
     model.find({},(err,result)=>{
         if(!err){
             // console.log(result);
-            res.render("navMap",{data:result,posNow:NOWPOS});
+            res.render("navMap",{data:result,posNow:NOWPOS,ip:get_ip});
         }
     })
     
@@ -129,7 +136,7 @@ app.post('/insert',(req,res)=>{
 })
 
 app.get('/insert',(req,res)=>{
-    res.render('insert');
+    res.render('insert',{data:1,ip:get_ip});
 })
 
 /* -----------------------  insert  ------------------------ */
@@ -176,7 +183,8 @@ app.get('/update',(req,res)=>{
     model.findById(id,function(err,doc){
         if(!err){
             // console.log(doc);
-            res.render("update",{data:doc});
+            
+            res.render("update",{data:doc,ip:get_ip});
         }
     })
 })
