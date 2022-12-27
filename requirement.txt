@@ -1,0 +1,6 @@
+xdotool // for close terminal 
+gnome
+nodejs
+mongodb
+
+

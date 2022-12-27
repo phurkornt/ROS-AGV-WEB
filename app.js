@@ -8,9 +8,6 @@ const bodyParser = require('body-parser');
 
 const ejs = require('ejs');
 
-
-
-
 const app = express();
 
 
@@ -33,17 +30,6 @@ const robot = new mongoose.Schema({
 })
 const model = mongoose.model('positions',robot);
 
-
-// const Person = mongoose.model('Person', schema);
-// const std_msgs = rosnodejs.require('std_msgs').msg;
-
-// var dataset1 =[{name:"P1",pos:{orientation:  {x: 0, y: 0, z: -0.7071067811865476, w: -0.7071067811865475},position:  {x: 18.04266693552335, y: 19.296000287532806, z: 0}}},
-//               {name:"P2",pos:{orientation:  {x: 0, y: 0, z: -0.7071067811865476, w: -0.7071067811865475},position:  {x: 15.22133361975352, y: 19.296000287532806, z: 0}}}]
-
-// var dataset2 =[
-//     {name:"P1",pos:{orientation:  {x: 0, y: 0, z: 0.7165801798099274, w: 0.6975047282302623},position:  {x: 16.61466691424449, y: 20.256000301837922, z: 0}}},
-//     {name:"P2",pos:{orientation:  {x: 0, y: 0, z: 0.756237146993785, w: 0.6542976215046945},position:  {x: 18.97200028270483, y: 20.16000030040741, z: 0}}}]
-             
 
 let dataset =[{name:"Position 1",pos:{orientation:  {x: 0, y: 0, z: 0.9946229901291115, w: 0.10356209493161814},position:  {x: 14.313333546618619, y: 16.85333358446757, z: 0}},color:"e66465"},
 {name:"Point B",pos:{orientation:  {x: 0, y: 0, z: 0.7277604742911558, w: 0.6858313874849357},position:  {x: 14.313333546618619, y: 18.7733336130778, z: 0}},color:"e66465"}
@@ -168,8 +154,11 @@ app.listen( process.env.PORT || 3000,()=>{
     console.log('Server is running ...');
 });
 
+
 /*
+
 // open new terminal with command
+
 gnome-terminal -- ./tt.sh
 
 // search tab name 
@@ -184,3 +173,6 @@ xdotool windowactivate --sync $(xdotool search --name "roscore") key --clearmodi
 
 */
 
+/**
+ 
+ */

@@ -2,7 +2,7 @@
 
     // Connect to ROS.
     var ros = new ROSLIB.Ros({
-      url : 'ws://192.168.1.6:9090'
+      url : 'ws://localhost:9090'
     });
 
     // Create the main viewer.
@@ -12,17 +12,9 @@
       height : 600
     });
 
-    // Setup the nav client.
-    // var nav = NAV2D.OccupancyGridClientNav({
-    //   topic:'nn',
-    //   ros : ros,
-    //   rootObject : viewer.scene,
-    //   viewer : viewer,
-    //   serverName:'move_base',
-    //   withOrientation:true
-    // });
 
     function insert(){
+      // For insert position in db
       var nav = NAV2D.OccupancyGridClientNav({
         topic:'insert',
         ros : ros,
@@ -33,7 +25,7 @@
       });
     }
     function show_pos(data){
-      // console.log("POS F DB : ",data);
+      // For show position 
       var nav = NAV2D.OccupancyGridClientNav({
         topic:'nn',
         ros : ros,
@@ -47,6 +39,7 @@
     
 
     function move_to_pos(data,pos){
+      // For move position 
       var nav = NAV2D.OccupancyGridClientNav({
         topic:'nn',
         ros : ros,
@@ -59,28 +52,3 @@
         posCon:pos.con
       });
     }
-
-
-
-    // var listener = new ROSLIB.Topic({
-    //    ros : ros,
-    //    name : '/phu',
-    //    messageType : 'std_msgs/String'
-    //  });
-   
-    //  listener.subscribe(function(message) {
-    //    console.log('Received message on ' + listener.name + ': ' + message.data);
-    //    listener.unsubscribe();
-    //  });  
-
-    // var listener = new ROSLIB.Topic({
-    //   ros : ros,
-    //   name : '/robot_pose',
-    //   messageType : 'geometry_msgs/Pose'
-    // });
-  
-    // listener.subscribe(function(message) {
-    //   console.log('Received message on ' + ': ' + message);
-    //   listener.unsubscribe();
-    // });
-  
