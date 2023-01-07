@@ -17,6 +17,9 @@
       height : 600
     });
 
+
+
+
     function insert(){
       // For insert position in db
       var nav = NAV2D.OccupancyGridClientNav({
@@ -70,3 +73,22 @@
         posCon:pos.con
       });
     }
+
+
+    let mes ="";
+    let listener = new ROSLIB.Topic({
+      ros : ros,
+      name : '/chatter',
+      messageType : 'std_msgs/String'
+    });
+    listener.subscribe(function(message) {
+      mes = message.data
+      // console.log('Received message on ' + listener.name + ': ' + message.data);
+      // listener.unsubscribe();
+    });
+    document.body.addEventListener('click',function(){
+        console.log(mes);
+    })    
+    
+
+

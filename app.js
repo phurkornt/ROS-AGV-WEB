@@ -100,12 +100,10 @@ app.post('/saver',(req,res)=>{
 //  function run ros 
 app.post('/launch_slam',(req,res)=>{
     // rostopic  echo /scan 
-    // console.log('HI');
+    console.log('HI');
     command   = 'gnome-terminal -- roslaunch urdf_sim urdf_slam.launch ';
     execSync(command, { encoding: 'utf-8' });
-
     // console.log('Output was:\n', output);
-
     res.redirect('/slam');
 });
 //
@@ -196,7 +194,7 @@ app.get('/update',(req,res)=>{
 
  
 app.listen( process.env.PORT || 3000,()=>{
-    console.log('Server is running ...');
+    console.log('Server is running ...',get_ip);
 });
 
 
@@ -219,5 +217,5 @@ xdotool windowactivate --sync $(xdotool search --name "roscore") key --clearmodi
 */
 
 /**
- 
+ wowowoww
  */
