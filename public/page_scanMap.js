@@ -9,7 +9,7 @@ var ros = new ROSLIB.Ros({
 
 // Create the main viewer.
  var viewer = new ROS2D.Viewer({
-  divID : 'map',
+  divID : 'mapper',
   width : 600,
   height : 600
 });
@@ -64,16 +64,19 @@ var gridClient = new ROS2D.OccupancyGridClient({
     });
     cmd_vel_listener.publish(twist);
   }
+
   var nav = NAV2D.OccupancyGridClientNav({
+    
     topic:'none',
     ros : ros,
     rootObject : viewer.scene,
     viewer : viewer,
     serverName:'move_base',
     withOrientation:true
-    
+
   });
 
+  
   createJoystick = function () {
     var options = {
       zone: document.getElementById('zone_joystick'),

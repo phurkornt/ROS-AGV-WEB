@@ -10,6 +10,7 @@ const ejs = require('ejs');
 
 const app = express();
 
+const session = require('express-session')
 
 let NOWPOS = 0;
 
@@ -17,8 +18,17 @@ app.set('view engine', 'ejs');
 app.use(express.static("public"));
 app.use('/axios',express.static("node_modules/axios/dist/"));
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(session({
+    secret:'id',
+    resave:false,
+    saveUninitialized:false
+}))
 
-
+const USER = [{
+    username : "admin",
+    password : "123",
+    role     : "a"
+}]
 
 
 const mongoose = require('mongoose');
@@ -55,20 +65,70 @@ get_ip = get_ip.wlp0s20f3[0].address;
 
 
 
-app.get('/',(req,res)=>{
-    res.redirect('/navigation')
-    // res.render("scanMap");
+app.get('/',(req,res)=>{    
+
+    if( req.session.login === undefined ){
+
+        res.redirect('/login');
+
+    }else{
+
+        res.redirect('/navigation')
+
+    }
 });
+
+app.get('/login',(req,res)=>{    
+    if( req.session.login === undefined ){
+        res.render('login',{ip:get_ip,status:0});
+    }else{
+        res.redirect("/navigation");
+    }
+});
+app.post('/login',(req,res)=>{    
+    let isMatch = false;
+    for(i of USER){
+        if(req.body.username === i.username && req.body.password === i.password ){
+            // console.log("TRUE");
+            isMatch = true;
+            break;
+        }
+    }
+    if( isMatch === true){
+        req.session.login = "login";
+        res.redirect("/navigation");
+    }else{
+        res.render('login',{ip:get_ip,status:1});
+    }
+
+});
+
 app.get('/slam',(req,res)=>{
-    res.render("scanMap",{ip:get_ip});
+
+    if( req.session.login === undefined ){
+        res.render('login',{ip:get_ip,status:0});
+    }else{
+
+        res.render("scanMap",{
+            ip:get_ip,
+            slam:req.session.slam
+        });
+
+    }
+
 });
 app.get('/navigation',(req,res)=>{
-    model.find({},(err,result)=>{
-        if(!err){
-            // console.log(result);
-            res.render("navMap",{data:result,posNow:NOWPOS,ip:get_ip});
-        }
-    })
+    if( req.session.login === undefined ){
+        res.render('login',{ip:get_ip,status:0});
+    }else{
+        model.find({},(err,result)=>{
+            if(!err){
+                // console.log(result);
+                res.render("navMap",{data:result,posNow:NOWPOS,ip:get_ip});
+            }
+        })
+    }
+    
     
 });
 
@@ -142,6 +202,8 @@ app.get('/insert',(req,res)=>{
 /* -----------------------  insert  ------------------------ */
 
 
+
+
 /* -----------------------  delect  ------------------------ */
 
 app.post('/delete',(req,res)=>{
@@ -155,6 +217,7 @@ app.post('/delete',(req,res)=>{
 
 
 /* -----------------------  delect  ------------------------ */
+
 
 
 

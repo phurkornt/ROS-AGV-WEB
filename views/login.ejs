@@ -1,0 +1,77 @@
+<%- include("partials/header") %> 
+
+<div class="container">
+
+    <div class="d-flex justify-content-center" style="margin: 10% auto;">
+        <div class="card" style="width: 30rem;">
+            <div class="card-body">
+            <h5 class="card-title fs-2 mb-4 text-center" >LOGIN</h5>
+            
+            <% if(status === 1){ %>
+                <div id="" class="alert alert-danger" role="alert">
+                    Wrong password
+                </div>
+            <%}%>
+
+
+            <div id="alert" class="alert alert-danger" role="alert">
+                Input All 
+            </div>
+
+            <form id="form" action="/login" method="post">
+                <div class="mt-3">
+                    <label for="exampleFormControlInput1" class="form-label fs-4">Username</label>
+                    <input type="text" class="form-control p-3" name ="username">
+                </div>
+
+                <div class="my-2">
+                    <label for="exampleFormControlInput1" class="form-label fs-4">Password</label>
+                    <input type="password" class="form-control p-3" name ="password">
+                </div>
+
+                <div class="d-grid gap-2 my-3">
+                    <button type="submit" onclick="return vail()"class="btn btn-success p-3  btn-lg rounded-4" > Submit</button>
+                </div>
+            </form>
+
+
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script>
+    let alert = document.querySelector("#alert");
+    alert.classList.add("d-none");
+
+    function vail(){
+        // password
+        let user = (document.querySelector("input[name=username]").value).trim();
+        let pass = (document.querySelector("input[name=password]").value).trim();
+        if(user != "" && pass != ""){
+            return true;
+        }else{
+            alert.classList.remove("d-none");
+            return false;
+        }
+    }
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<%- include("partials/footer") %> 
