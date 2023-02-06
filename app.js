@@ -66,6 +66,7 @@ get_ip = get_ip.wlo1[0].address;
 
 
 app.get('/',(req,res)=>{    
+    req.session.login="d"
 
     if( req.session.login === undefined ){
 

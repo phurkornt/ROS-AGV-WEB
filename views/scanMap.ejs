@@ -56,13 +56,27 @@
             </div>
 
             <div class="card mt-3"  >
-                <div class="card-body " style="">
+                <div class="card-body " > 
                     <h5 class="card-title text-center fs-3">Movement</h5>
-                    <div class="d-flex">
-                        <div class="btn btn-outline-secondary p-3  ">Forward</div>
-                        <div class="btn btn-outline-secondary p-3  ">Backward</div>
-                        <div class="btn btn-outline-secondary p-3  ">Turn Left</div>
-                        <div class="btn btn-outline-secondary p-3  ">Turn Right</div>
+                    
+                    <p>speed config <b>max(5)</b></p>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" >Linear Speed</span>
+                        <input name="linear_speed" type="number" class="form-control" value="0.2" >
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" >Angular Speed</span>
+                        <input name="angular_speed" type="number" class="form-control" value="0.2" >
+                    </div>
+
+
+                    <br>
+                    <div class="row">
+                        <div id="m-f" class="col-3  btn btn-outline-secondary p-3  ">Forward</div>
+                        <div id="m-b" class="col-3  btn btn-outline-secondary p-3  ">Backward</div>
+                        <div id="m-l" class="col-3  btn btn-outline-secondary p-3  ">Turn Left</div>
+                        <div id="m-r" class="col-3  btn btn-outline-secondary p-3  ">Turn Right</div>
+                        <div id="m-s" class=" btn btn-outline-danger p-3  ">Stop</div>
                     </div>
                  
                     
