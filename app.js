@@ -61,7 +61,7 @@ let dataset =[{name:"Position 1",pos:{orientation:  {x: 0, y: 0, z: 0.9946229901
     
 const os = require('os');
 let get_ip = os.networkInterfaces();
-get_ip = get_ip.wlp0s20f3[0].address;
+get_ip = get_ip.wlo1[0].address;
 
 
 

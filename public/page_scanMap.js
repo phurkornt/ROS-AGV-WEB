@@ -9,7 +9,7 @@ var ros = new ROSLIB.Ros({
 
 // Create the main viewer.
  var viewer = new ROS2D.Viewer({
-  divID : 'mapper',
+  divID : 'nav',
   width : 600,
   height : 600
 });
@@ -26,17 +26,7 @@ var gridClient = new ROS2D.OccupancyGridClient({
     viewer.scaleToDimensions(gridClient.currentGrid.width, gridClient.currentGrid.height);
     viewer.shift(gridClient.currentGrid.pose.position.x, gridClient.currentGrid.pose.position.y);
   });
-  ros.on('connection', function() {
-    document.getElementById("status").innerHTML = "Connected";
-  });
 
-  ros.on('error', function(error) {
-    document.getElementById("status").innerHTML = "Error";
-  });
-
-  ros.on('close', function() {
-    document.getElementById("status").innerHTML = "Closed";
-  });
 
   cmd_vel_listener = new ROSLIB.Topic({
     ros : ros,
@@ -67,7 +57,6 @@ var gridClient = new ROS2D.OccupancyGridClient({
 
   var nav = NAV2D.OccupancyGridClientNav({
     
-    topic:'none',
     ros : ros,
     rootObject : viewer.scene,
     viewer : viewer,
@@ -102,11 +91,13 @@ var gridClient = new ROS2D.OccupancyGridClient({
     self.manager.on('end', function () {
       console.log("Movement end");
     });
-      manager.on('start', function (event, nipple) {
-    timer = setInterval(function () {
-      move(linear_speed, angular_speed);
-    }, 25);
-  });
+    manager.on('start', function (event, nipple) {
+
+      timer = setInterval(function () {
+        move(linear_speed, angular_speed);
+      }, 25);
+
+    });
 
   manager.on('end', function () {
     if (timer) {
@@ -114,10 +105,11 @@ var gridClient = new ROS2D.OccupancyGridClient({
     }
     self.move(0, 0);
   });
+
   manager.on('move', function (event, nipple) {
-    max_linear = 2.0; // m/s
+    max_linear = 1.0; // m/s
     max_angular = 1.0; // rad/s
-    max_distance = 75.0; // pixels;
+    max_distance = 1.0; // pixels;
     linear_speed = Math.sin(nipple.angle.radian) * max_linear * nipple.distance/max_distance;
     angular_speed = -Math.cos(nipple.angle.radian) * max_angular * nipple.distance/max_distance;
   });
