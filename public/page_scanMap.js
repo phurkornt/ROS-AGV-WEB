@@ -10,8 +10,8 @@ var ros = new ROSLIB.Ros({
 // Create the main viewer.
  var viewer = new ROS2D.Viewer({
   divID : 'nav',
-  width : 600,
-  height : 600
+  width : 500,
+  height : 500
 });
 
 var gridClient = new ROS2D.OccupancyGridClient({
@@ -119,8 +119,9 @@ var gridClient = new ROS2D.OccupancyGridClient({
   function getSpeed(){
     let ang = parseFloat( document.querySelector("input[name=angular_speed]").value )
     let lin = parseFloat( document.querySelector("input[name=linear_speed]").value )
-    if(ang >= 5)ang = 5;
-    if(lin >= 5)lin = 5;
+    let max_limit = 1;
+    if(ang >= max_limit)ang = max_limit;
+    if(lin >= max_limit)lin = max_limit;
     return [lin,ang];
   }
 

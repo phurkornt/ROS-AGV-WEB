@@ -1,8 +1,9 @@
 <%- include("partials/header") %> 
+
 <div class="container">
-    <div class="card mt-3" style="width: 100%;">
+    <div class="card mt-3 bg-secondary bg-opacity-50 "   style="width: 100%;">
         <div class="card-body">
-          <h5 class="card-title text-center fs-2 fw-bolder">Map System</h5>
+          <h5 class="card-title text-center fs-4 fw-bolder">สร้างแผนที่</h5>
         </div>
     </div>
     
@@ -32,22 +33,24 @@
         <div class="col-lg-6 col-md-6 ">
 
 
+
             <div class="card mt-3"  >
                 <div class="card-body">
-                    <h5 class="card-title text-center fs-3">Config</h5>
-                    
+                    <h5 class="card-title  fs-4">ตั้งค่า</h5>
+                    <hr>
+
+
 
                 <form action="/launch_slam" method="post" class="">
                     <button type="submit" class="btn btn-danger">เปิดระบบสร้างเเผนที่</button>
                 </form>
-
-                
+                <br>
                 <form action="/saver" method="post" >
                     <span>Map name : </span>
-                    <input type="text" name="map_name" placeholder="" >
-                    <button type="submit" class="btn btn-success ">save</button>
+                    <input type="text" class="form-control my-1" name="map_name" placeholder="" >
+                    <button type="submit" class="btn btn-success ">บันทึกแผนที่</button>
                 </form>
-
+              
                 <!-- <p id="zone_joystick" style ="margin-top: 90px;padding-bottom: 50px;"></p> -->
                 
                 
@@ -57,26 +60,26 @@
 
             <div class="card mt-3"  >
                 <div class="card-body " > 
-                    <h5 class="card-title text-center fs-3">Movement</h5>
-                    
-                    <p>speed config <b>max(5)</b></p>
+                    <h5 class="card-title  fs-4">ควบคุม</h5>
+                    <hr>
+                    <p>ความเร็วสูงสุด <b>max(1)</b></p>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" >Linear Speed</span>
+                        <span class="input-group-text" >ความเร็วเชิงเส้น</span>
                         <input name="linear_speed" type="number" class="form-control" value="0.2" >
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" >Angular Speed</span>
+                        <span class="input-group-text" >ความเร็วเชิงมุม</span>
                         <input name="angular_speed" type="number" class="form-control" value="0.2" >
                     </div>
 
 
                     <br>
                     <div class="row">
-                        <div id="m-f" class="col-3  btn btn-outline-secondary p-3  ">Forward</div>
-                        <div id="m-b" class="col-3  btn btn-outline-secondary p-3  ">Backward</div>
-                        <div id="m-l" class="col-3  btn btn-outline-secondary p-3  ">Turn Left</div>
-                        <div id="m-r" class="col-3  btn btn-outline-secondary p-3  ">Turn Right</div>
-                        <div id="m-s" class=" btn btn-outline-danger p-3  ">Stop</div>
+                        <div id="m-f" class="col-3  btn btn-outline-secondary p-3  ">เดินทาง</div>
+                        <div id="m-b" class="col-3  btn btn-outline-secondary p-3  ">ถอยหลัง</div>
+                        <div id="m-l" class="col-3  btn btn-outline-secondary p-3  ">หมุนซ้าย</div>
+                        <div id="m-r" class="col-3  btn btn-outline-secondary p-3  ">หมุนขวา</div>
+                        <div id="m-s" class=" btn btn-outline-danger p-3  ">หยุด</div>
                     </div>
                  
                     

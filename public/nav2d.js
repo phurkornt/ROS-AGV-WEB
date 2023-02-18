@@ -61,7 +61,7 @@ NAV2D.ImageMapClientNav = function(a) {
 ,
 NAV2D.Navigator = function(a) {
     function show_maker(){
-        
+        // console.log("HI");
         // console.log("Show : maker ",posSet[1].color)
         function hexToRgb(hex) {
             var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -78,7 +78,7 @@ NAV2D.Navigator = function(a) {
             let rgb = hexToRgb(posSet[i].color);
 
             var d = new ROS2D.NavigationArrow({
-                size: 0.8,
+                size: 0.3,
                 strokeSize: 0.05,
                 fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
                 pulse: !0
@@ -189,6 +189,7 @@ NAV2D.Navigator = function(a) {
         c.rootObject.addChild(d)
         
     }
+
     function update(a) {
         // For update pos to db
         function hexToRgb(hex) {

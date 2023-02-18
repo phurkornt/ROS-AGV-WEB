@@ -1,8 +1,44 @@
+// -------------------------- GLOBLE VARIABLE --------------------------
+/*
+    !Note
+    Status 
+       0   not run
+       1   create map
+       2   nav map
+
+*/
+let GLOBLE_Status_process = 0 ;
+
+function control_Status_process(input){
+    if( GLOBLE_Status_process === 0 ){
+        if(input === 1){
+            shell.exec('sh ./shell-script/open-createMap.sh')
+        }else if(input === 2){
+            shell.exec('sh ./shell-script/open-navMap.sh')
+        }
+    }else if( GLOBLE_Status_process === 1){
+        if(input === 2){
+            shell.exec('sh ./shell-script/close-navMap.sh')
+            shell.exec('sh ./shell-script/open-createMap.sh')
+        }
+    }else if( GLOBLE_Status_process === 2){
+        if(input === 1){
+            shell.exec('sh ./shell-script/close-createMap.sh')
+            shell.exec('sh ./shell-script/open-navMap.sh')
+        }
+    }
+    GLOBLE_Status_process = input ;
+}
+
+// -------------------------- GLOBLE VARIABLE --------------------------
+
+
 
 const rosnodejs = require('rosnodejs');
 const express = require('express');
 
 const execSync = require('child_process').execSync;
+const shell = require('shelljs')
 
 const bodyParser = require('body-parser');
 
@@ -31,17 +67,22 @@ const USER = [{
 }]
 
 
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://127.0.0.1/robot',(err)=>{
-    if(!err)console.log("connect");
-})
 
-const robot = new mongoose.Schema({
-    name:String,
-    pos:"mixed",
-    color:String
-})
-const model = mongoose.model('positions',robot);
+
+// const mongoose = require('mongoose');
+// mongoose.connect('mongodb://127.0.0.1/robot',(err)=>{
+//     if(!err)console.log("connect");
+// })
+
+// const robot = new mongoose.Schema({
+//     name:String,
+//     pos:"mixed",
+//     color:String
+// })
+// const model = mongoose.model('positions',robot);
+
+
+const model = require('./config/db_config')
 
 
 let dataset =[{name:"Position 1",pos:{orientation:  {x: 0, y: 0, z: 0.9946229901291115, w: 0.10356209493161814},position:  {x: 14.313333546618619, y: 16.85333358446757, z: 0}},color:"e66465"},
@@ -86,6 +127,7 @@ app.get('/login',(req,res)=>{
         res.redirect("/navigation");
     }
 });
+
 app.post('/login',(req,res)=>{    
     let isMatch = false;
     for(i of USER){
@@ -104,17 +146,15 @@ app.post('/login',(req,res)=>{
 
 });
 
-app.get('/slam',(req,res)=>{
+app.get('/slam', async (req,res)=>{
 
     if( req.session.login === undefined ){
         res.render('login',{ip:get_ip,status:0});
     }else{
-
         res.render("scanMap",{
             ip:get_ip,
             slam:req.session.slam
         });
-
     }
 
 });
@@ -122,7 +162,7 @@ app.get('/navigation',(req,res)=>{
     if( req.session.login === undefined ){
         res.render('login',{ip:get_ip,status:0});
     }else{
-        model.find({},(err,result)=>{
+        model.modelPos.find({},(err,result)=>{
             if(!err){
                 // console.log(result);
                 res.render("navMap",{data:result,posNow:NOWPOS,ip:get_ip});
@@ -145,31 +185,19 @@ app.get('/navigation/move/:pos',(req,res)=>{
 //  function save map 
 app.post('/saver',(req,res)=>{
     map_name = req.body.map_name;
-
-    // command   = 'rosrun map_server map_saver -f /home/phul/Desktop/map/'+map_name;
-    command   = 'rosrun map_server map_saver -f /home/phul/agv/src/urdf_sim/map/'+map_name;
-    
-    execSync(command, { encoding: 'utf-8' });
-    // console.log('Output was:\n', output);
-    command   = 'xdotool windowactivate --sync $(xdotool search --name "urdf_sim") key --clearmodifiers alt+F4';
-    execSync(command, { encoding: 'utf-8' });
-    
+    shell.exec('sh ./shell-script/close-createMap.sh')
     res.redirect('/slam');
 });
+
 
 
 //  function run ros 
 app.post('/launch_slam',(req,res)=>{
-    // rostopic  echo /scan 
-    // console.log('HI');
-    command   = 'gnome-terminal -- roslaunch urdf_sim urdf_slam.launch ';
-    execSync(command, { encoding: 'utf-8' });
-
-    // console.log('Output was:\n', output);
+    
+    control_Status_process(1);
 
     res.redirect('/slam');
 });
-//
 
 
 
@@ -187,7 +215,7 @@ app.post('/insert',(req,res)=>{
     }
     // JSON.parse(req.body.pos)
 
-    model.create(doc,(err)=>{
+    model.modelPos.create(doc,(err)=>{
         if(!err){
             res.send({state:1});
         }
@@ -209,7 +237,7 @@ app.get('/insert',(req,res)=>{
 
 app.post('/delete',(req,res)=>{
     console.log(req.body.delete);
-    model.findByIdAndDelete(req.body.delete , function(err){
+    model.modelPos.findByIdAndDelete(req.body.delete , function(err){
         if(!err){
             res.redirect('/');
         }
@@ -234,7 +262,7 @@ app.post('/update',(req,res)=>{
         color:req.body.color
     }
     // JSON.parse(req.body.pos)
-    model.findByIdAndUpdate( id , doc , function(err){
+    model.modelPos.findByIdAndUpdate( id , doc , function(err){
         if(!err){
             // console.log("Done Save");
             res.send({state:1});
@@ -244,10 +272,8 @@ app.post('/update',(req,res)=>{
 })
 app.get('/update',(req,res)=>{
     let id = req.query.id;
-    model.findById(id,function(err,doc){
+    model.modelPos.findById(id,function(err,doc){
         if(!err){
-            // console.log(doc);
-            
             res.render("update",{data:doc,ip:get_ip});
         }
     })
