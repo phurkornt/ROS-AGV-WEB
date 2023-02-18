@@ -14,6 +14,8 @@ function control_Status_process(input){
         if(input === 1){
             shell.exec('sh ./shell-script/open-createMap.sh')
         }else if(input === 2){
+            console.log(2);
+
             shell.exec('sh ./shell-script/open-navMap.sh')
         }
     }else if( GLOBLE_Status_process === 1){
@@ -23,8 +25,8 @@ function control_Status_process(input){
         }
     }else if( GLOBLE_Status_process === 2){
         if(input === 1){
-            shell.exec('sh ./shell-script/close-createMap.sh')
-            shell.exec('sh ./shell-script/open-navMap.sh')
+            shell.exec('sh ./shell-script/close-navMap.sh')
+            shell.exec('sh ./shell-script/open-createMap.sh')
         }
     }
     GLOBLE_Status_process = input ;
@@ -197,6 +199,11 @@ app.post('/launch_slam',(req,res)=>{
     control_Status_process(1);
 
     res.redirect('/slam');
+});
+
+app.post('/launch_nav',(req,res)=>{
+    control_Status_process(2);
+    res.redirect('/navigation');
 });
 
 
