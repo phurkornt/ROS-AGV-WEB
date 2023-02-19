@@ -10,7 +10,7 @@ const USER = [{
 }]
 
 exports.first_route = async (req, res) => {
-
+    
     if( req.session.login === undefined ){
         res.redirect('/login');
 
@@ -22,6 +22,7 @@ exports.first_route = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+    req.session.login = "login";
     if( req.session.login === undefined ){
         res.render('login',{ip:get_ip,status:0});
     }else{
