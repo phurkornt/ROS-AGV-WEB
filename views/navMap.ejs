@@ -23,10 +23,10 @@
             
             <div class="card-body">
               <h5 class="card-title">Configure</h5>
-              <form action="/launch_nav" method="post" class="">
+              <form action="launch_nav" method="post" class="">
                     <button type="submit" class="btn btn-danger">เปิดระบบการนำทาง</button>
               </form>
-              <a href="/insert" class="btn btn-success p-2 mt-2 float-end" >insert</a>
+              <a href="insert" class="btn btn-success p-2 mt-2 float-end" >insert</a>
 
 
               <table class="table table-striped mt-2 border-top ">
@@ -43,9 +43,9 @@
                         </td>
                         <td>
                             
-                          <a href="/update?id=<%= data[i]._id _%>" class="btn btn-warning py-1 " >EDIT</a>
+                          <a href="update?id=<%= data[i]._id _%>" class="btn btn-warning py-1 " >EDIT</a>
 
-                          <form action="/delete" method="post" class="d-inline pw-3">
+                          <form action="delete" method="post" class="d-inline pw-3">
                               <button type="submit" class="btn btn-danger btn-sm" onclick="return delect()"  name="delete" value="<%= data[i]._id _%>">Delete</button>
                           </form>
 

@@ -15,7 +15,6 @@ const robot = new mongoose.Schema({
        0   not run
        1   create map
        2   nav map
-
 */
 const now_process = new mongoose.Schema({
     status:Number,

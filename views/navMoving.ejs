@@ -22,7 +22,7 @@
                       <td><%= data[i].name%></td>
                       <td>
                           <button class="btn btn-warning btn-sm" data-toggle="modal"  >EDIT</button>
-                          <form action="/delete" method="post" class="d-inline pw-3">
+                          <form action="delete" method="post" class="d-inline pw-3">
                               <button class="btn btn-danger btn-sm" onchange="this.form.submit()"  name="delete" value="<%= data[i]._id _%>, ">Delete</button>
                           </form>
                           
@@ -70,7 +70,7 @@
     run_function(obj);
 
     function moveTopoint(pos){
-      window.location="/navigation/move/1";
+      window.location="navigation/move/1";
     }
 
 
