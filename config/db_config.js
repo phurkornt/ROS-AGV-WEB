@@ -10,9 +10,11 @@ const robot = new mongoose.Schema({
 })
 
 const nav_room = new mongoose.Schema({
-    name:String
+    name:String,
+    map:String
 })
 const nav_room_out = new mongoose.Schema({
+    name:String,
     pos:"mixed",
     color:String,
     nav_room_name:String

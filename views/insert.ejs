@@ -26,7 +26,7 @@
                     <a href="/"  class="btn btn-secondary p-3 px-5 " >Cancle</a>
                   </div>
                   <div class="d-grid col-8">
-                    <button class="btn btn-success p-3 " onclick="insert_to_db()" >Save</button>
+                    <button class="btn btn-success p-3 " onclick="insert_to_db('<%=name_room%>' , '<%=name_map%>')" >Save</button>
                   </div>
 
                 </div>
@@ -55,17 +55,19 @@
 
   <script src="page_nav_map.js"></script>
 
-  <script src="axios/axios.min.js"></script>
+  <script src="/axios/axios.min.js"></script>
+  <!-- <script src="../node_modules/axios/dist/axios.min.js"></script> -->
   
   <script>
 
     insert();
 
-    function insert_to_db(){
+    function insert_to_db(name_room,name_map){
         let name = document.querySelector("input[name=name]").value;
         let color = document.querySelector("input[name=color]").value;
         let pos = get_insert_pos
-        
+
+        // console.log(name_room,name_map);
         // check
         if(name == "" ||  pos == undefined){
             alert("input all data");
@@ -77,15 +79,17 @@
             params.append('name',name);
             params.append('color',color);
             params.append('pos',pos_tranfrom);
+            params.append('name_room',name_room);
+            params.append('name_map',name_map);
 
             axios({
-                url:'/insert',
+                url:'/createNav/insert_nav_action',
                 method:'post',
                 data:params,
                 timeout:3000
             }).then((result)=>{
                 alert("Insert Done !");
-                window.location="/";
+                window.location=`/createNav/nav_room/?name_room=${name_room}&name_map=${name_map}`;
                 console.log("insert DONE !");
             })
         }

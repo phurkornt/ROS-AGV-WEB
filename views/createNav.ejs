@@ -25,40 +25,127 @@
             <div class="card-body">
               <h5 class="card-title">Configure</h5>
 
-              <form class="row g-3" action="launch_map" method="post">
-                <div class="col-auto">
-                    <select class="form-select" aria-label="Default select example" name="map">
-                        <% for(let i of file_map){%>
-                            <p><%= i %></p>
-                            <option  value="<%= i %>"><%=  i%></option>
-                        <%} %>
-                      </select>
-                </div>
-             
-                <div class="col-auto">
-                  <button type="submit" class="btn btn-primary mb-3">Open map</button>
-                </div>
+              <% if( file_map.length > 0 ){ %>
+
+
                 
-              </form>
+                <form class="row g-3" action="launch_map" method="post">
+                    
+                    <div class="col-auto">
+                        <select id="select_map" class="form-select" aria-label="Default select example" name="map">
+                            <% for(let i of file_map){%>
+                                <p><%= i %></p>
+                                <option  value="<%= i %>"><%=  i%></option>
+                            <%} %>
+                          </select>
+                    </div>
+
+              
+                    <div class="col-auto">
+                      <button type="submit" class="btn btn-primary mb-3">Open map</button>
+                    </div>
+                    
+                </form>
+
+                <% if (locals.select_map ){%>
+
+                  <div class="d-flex  justify-content-start mb-1">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      add room
+                    </button>
+            
+                  </div>
+
+                
+                  <table class="table table-striped mt-2 border-top ">
+                    <thead class="thead-dark">
+                        <th scope="col">name</th>
+                        <th scope="col">number</th>
+                        <th scope="col">Config</th>
+                    </thead>
+                    <tbody>
+
+                        <% for(let i of NavRoom){%>
+                          <tr>
+                            <td><%= i.name %></td>
+                            <td><%= i.map%></td>
+                            <td>
+                              <a href="nav_room\?name_room=<%=i.name%>&name_map=<%= select_map %>" class="btn btn-primary opacity-75 py-1 " >Nav Stack</a>
+                              <a href="delete_room\?name_room=<%=i.name%>&name_map=<%= select_map %>" onclick="return confirm('Are you sure ?')" class="btn btn-danger py-1 " >Delete</a>
+                            </td>
+                          </tr>
+                        <%} %>
+                        
+                    </tbody>
+                  </table>
+
+
+                <!--  ------------------------- ADD ------------------------- -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+
+                        <form action="insert_room" method="post">
+                          <div class="modal-body">
+                          <!-- ============================== Form ==============================-->
+                              <!-- <div class="form-group">
+                                  <blockquote id="alert" class="quote-danger m-0">
+                                      <h3>! กรุณาใส่ข้อมูลให้ครบ</h3>
+                                  </blockquote>
+                              </div> -->
+                              <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">name</span>
+                                <input type="text" name="name_room" class="form-control" placeholder="room1"  >
+                                <input type="text" name="name_map" value="<%= select_map %>" class="form-control d-none" placeholder="room1"  >
+                              </div>
+                              
+                      
+              
+                          </div>
+                          
+                      
+              
+                      
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                      </div>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+
+                <script>
+                  document.querySelector('#select_map').value = '<%-select_map%>';
+                </script>
+
+
+                <%}%>
+                
+
+              <%}else{ %>
+
+                <h3>no map</h3>
+
+
+              <%} %>
+
 
 
               
               
-              <form action="launch_nav" method="post" class="">
                     <!-- <button type="submit" class="btn btn-danger">เปิดระบบการนำทาง</button> -->
-              </form>
               <!-- <a href="insert" class="btn btn-success p-2 mt-2 float-end" >insert</a> -->
 
 
-              <table class="table table-striped mt-2 border-top ">
-                <thead class="thead-dark">
-                    <tr><th scope="col">Posname</th><th scope="col">Color</th><th scope="col">Config</th></tr>
-                </thead>
-                <tbody>
-
-                    </tr>
-                </tbody>
-              </table>
+              
   
             </div>  
 
@@ -73,6 +160,10 @@
 
       </div>
 
+
+
+      
+
       <div class="col-lg-6 col-md-6">
         <div id="nav" style="text-align: center; " class="mt-3"></div>
       </div>
@@ -85,17 +176,10 @@
 
 
   <script src="page_nav_map.js"></script>
-  
+
   <script>
-
-    function delect(){
-      return confirm("Are you confirm !");
-      
-    }
-
-
+     show_pos('');
   </script>
-
 
 
 

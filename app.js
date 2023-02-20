@@ -59,6 +59,7 @@ app.use(express.static("public"));
 app.use('/slam', express.static(path.join(__dirname, 'public')))
 app.use('/navigation', express.static(path.join(__dirname, 'public')))
 app.use('/createNav', express.static(path.join(__dirname, 'public')))
+app.use('/createNav/nav_room', express.static(path.join(__dirname, 'public')))
 
 app.use('/axios',express.static("node_modules/axios/dist/"));
 app.use(bodyParser.urlencoded({extended:true}));

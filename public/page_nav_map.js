@@ -17,6 +17,7 @@
       height : 600
     });
 
+    
     function insert(){
       // For insert position in db
       var nav = NAV2D.OccupancyGridClientNav({
