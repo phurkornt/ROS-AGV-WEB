@@ -17,7 +17,8 @@ const nav_room_out = new mongoose.Schema({
     name:String,
     pos:"mixed",
     color:String,
-    nav_room_name:String
+    nav_room_name:String,
+    option:Number
 })
 const nav_room_back = new mongoose.Schema({
     pos:"mixed",

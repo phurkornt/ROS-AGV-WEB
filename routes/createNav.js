@@ -15,8 +15,10 @@ router.get('/nav_room', createNavController.nav_room);
 
 router.get('/insert_nav', createNavController.insert_nav);
 router.get('/delete_nav', createNavController.delete_nav);
+router.get('/update_nav', createNavController.update_nav);
 
 router.post('/insert_nav_action', createNavController.insert_nav_action);
+router.post('/update_nav_action', createNavController.update_nav_action);
 
 
 

@@ -19,12 +19,20 @@
                     <input type="color" style="height: 38px;" class="form-control "  aria-label="Username" aria-describedby="basic-addon1" name="color" value="<%= data.color _%>" >
                 </div>
                 
+                <div class="form-check mb-3">
+                  
+                  <input class="form-check-input p-2 " type="checkbox" name="option"  >
+             
+                  <label class="form-check-label" for="flexCheckIndeterminate"> Stop at point </label>
+                </div>
+              
+                
                 <div class="row mb-2">
                   <div class="d-grid col-4">
                     <a href="/"  class="btn btn-secondary p-3 px-5 " >Cancle</a>
                   </div>
                   <div class="d-grid col-8">
-                    <button class="btn btn-success p-3 " onclick="update_into_db()" >Save</button>
+                    <button class="btn btn-success p-3 " onclick="update_into_db('<%=name_room%>' , '<%=name_map%>')" >Save</button>
                   </div>
 
                 </div>
@@ -53,42 +61,54 @@
 
   <script src="page_nav_map.js"></script>
 
-  <script src="axios/axios.min.js"></script>
+  <script src="/axios/axios.min.js"></script>
 
   
   <script>
     var str =  '<%- JSON.stringify(data)%>';
     str = str.replace(/'/g, '"')
-    obj = JSON.parse(str);
-
+    let obj = JSON.parse(str);
+    console.log("DEBUG",obj);
     update(obj);
 
-    function update_into_db(){
+    function update_into_db(name_room,name_map){
         let name = document.querySelector("input[name=name]").value;
         let color = document.querySelector("input[name=color]").value;
+        let option = document.querySelector("input[name=option]").checked;
+        option = Number(option)
         let pos = get_insert_pos
-        
+
         // check
-        if(name == "" ||  pos == undefined){
-            alert("input all data");
+        if(name == ""){
+            alert("input Name data");
         }else{
             // use axios
             let params =new URLSearchParams();
-            pos_tranfrom = JSON.stringify({pos:pos})
+
+            let pos_tranfrom;
+            if(pos == undefined){
+              pos_tranfrom = JSON.stringify(obj)
+            }else{
+              pos_tranfrom = JSON.stringify({pos:pos})
+            }
             // console.log("BE",pos_tranfrom);
             params.append('id','<%- data._id %>');
             params.append('name',name);
             params.append('color',color);
             params.append('pos',pos_tranfrom);
+            params.append('name_room',name_room);
+            params.append('name_map',name_map);
+            params.append('option',option);
+
 
             axios({
-                url:'/update',
+                url:'/createNav/update_nav_action',
                 method:'post',
                 data:params,
                 timeout:3000
             }).then((result)=>{
                 alert("Update Done !");
-                window.location="/";
+                window.location=`/createNav/nav_room/?name_room=${name_room}&name_map=${name_map}`;
                 console.log("Update DONE !");
             })
         }
@@ -101,6 +121,17 @@
 
 
   </script>
+
+
+<script>
+  let option_value = parseInt( '<%= data.option %>' )
+  let doc_option = document.querySelector("input[name=option]")
+  if( option_value === 1){
+    doc_option.checked = true;
+  }else if( option_value === 0){
+    doc_option.checked = false;
+  }
+</script>
 
 
 

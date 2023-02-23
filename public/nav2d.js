@@ -78,8 +78,8 @@ NAV2D.Navigator = function(a) {
             let rgb = hexToRgb(posSet[i].color);
 
             var d = new ROS2D.NavigationArrow({
-                size: 0.3,
-                strokeSize: 0.05,
+                size: 0.25,
+                strokeSize: 0.008,
                 fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
                 pulse: !0
             });
@@ -174,9 +174,11 @@ NAV2D.Navigator = function(a) {
 
         let rgb = hexToRgb(posSet.color);
 
+        console.log("debug", rgb )
+
         var d = new ROS2D.NavigationArrow({
-            size: 0.8,
-            strokeSize: 0.05,
+            size: 0.2,
+            strokeSize: 0.01,
             fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
             pulse: !0
         });
@@ -208,7 +210,7 @@ NAV2D.Navigator = function(a) {
        
         let rgb = hexToRgb(document.querySelector("input[type=color]").value);
         var d = new ROS2D.NavigationArrow({
-            size: 16,
+            size: 12,
             strokeSize: 0.8,
             fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
             pulse: !0
@@ -328,15 +330,16 @@ NAV2D.Navigator = function(a) {
                 n = new ROSLIB.Vector3(m),
                 r = !0;
             else if ("move" === d) {
+                //  When click
                 if (c.rootObject.removeChild(q),
                 r === !0) {
                     var e = h.globalToRos(a.stageX, a.stageY)
                       , f = new ROSLIB.Vector3(e);
                     q = new ROS2D.NavigationArrow({
-                        size: 25,
-                        strokeSize: 1,
-                        fillColor: createjs.Graphics.getRGB(0, 255, 0, .66),
-                        pulse: !1
+                        size: 0,
+                        strokeSize: 0,
+                        fillColor: createjs.Graphics.getRGB(0, 0, 0, .66),
+                        pulse: !0
                     }),
                     s = f.x - n.x,
                     t = f.y - n.y,
@@ -347,9 +350,9 @@ NAV2D.Navigator = function(a) {
                     q.y = -n.y,
                     q.rotation =0,
                     q.scaleX = 1 / h.scaleX,
-                    q.scaleY = 1 / h.scaleY,
-                    c.rootObject.addChild(q)
-                    // console.log("w1");
+                    q.scaleY = 1 / h.scaleY
+                    // c.rootObject.addChild(q)
+
                 }
             } else if (r) {
                 // Click and work here ..
@@ -403,7 +406,6 @@ NAV2D.Navigator = function(a) {
 
 
         this.rootObject.addEventListener("stagemousedown", function(a) {
-            
             u(a, "down")
         }),
         this.rootObject.addEventListener("stagemousemove", function(a) {

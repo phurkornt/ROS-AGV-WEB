@@ -27,22 +27,42 @@
 
               <a href="/createNav/insert_nav?name_room=<%=name_room%>&name_map=<%=name_map%>" class="btn btn-success py-1 " >insert</a>
 
-              <table class="table table-striped mt-2 border-top ">
+              <table class="table table-striped mt-2 border-top text-center">
                 <thead class="thead-dark">
                     <th scope="col">Order</th>
-                    <th scope="col">name</th>
+                    <th scope="col">Name</th>
                     <th scope="col">color</th>
+                    <th scope="col">Stop at point</th>
+
                 </thead>
-                <tbody>
+                <tbody >
                   <% let n = 0; %>
                   <% for(let i of posOut){%>
                     <% n+=1; %>
                     <tr>
                       <td><%= n %></td>
                       <td><%= i.name %></td>
-                      <td><%= i.color%></td>
+
                       <td>
-                        <a href="nav_room\?name_room=<%=i.name%>&name_map=<%= 1 %>" class="btn btn-warning py-1 " >EDIT</a>
+                        <div class="d-flex justify-content-center">
+                          <input type="color"  class="form-control p-0 w-75  "  disabled  value="<%=i.color%>" >
+                        </div>
+                      </td>
+                      
+                      <td>
+                        <div class="d-flex justify-content-center">
+                          <div class="form-check  mb-2">
+                            <% if( i.option === 1 ){%>
+                              <input class="form-check-input p-2 " type="checkbox"  checked id="" disabled>
+                            <%}else if( i.option === 0 ){%>
+                              <input class="form-check-input p-2 " type="checkbox"  id="" disabled>
+                            <%}%>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <a href="/createNav/update_nav?name_room=<%=name_room%>&name_map=<%=name_map%>&id=<%=i._id%>" class="btn btn-warning py-1 " >EDIT</a>
                         <a href="/createNav/delete_nav?name_room=<%=name_room%>&name_map=<%=name_map%>&id=<%=i._id%>" onclick="return confirm('Are you sure ?')" class="btn btn-danger py-1 " >Delete</a>
                       </td>
                     </tr>

@@ -30,39 +30,37 @@ exports.createNav = async (req, res) => {
     if( req.session.login === undefined ){
         res.redirect('/login');
     }else{
-
+        // console.log(req.session.map);
+        // console.log(req.session.map);
         let file_map = await get_file();
-        if(req.query.map === undefined){
-            if(file_map.length > 0){
 
-                res.render('createNav',{
-                    ip:get_ip,
-                    file_map:file_map
-                });
 
-            }else {
-                res.render('createNav',{
-                        ip:get_ip,
-                        file_map:file_map
-                });
-            }
-        }else{
-
-            console.log(req.query.map,"FF");
-
-            // get
+        if( req.query.map != undefined ){
             let NavRoom = await model.modelNavRoom.find({"map":req.query.map})
-            // console.log(NavRoom);
-            // action
-
             res.render('createNav',{
                 ip:get_ip,
                 file_map:file_map,
                 select_map:req.query.map,
                 NavRoom:NavRoom
             });
+
+        }else if( req.session.map != undefined ){
+            let NavRoom = await model.modelNavRoom.find({"map":req.session.map})
+            res.render('createNav',{
+                ip:get_ip,
+                file_map:file_map,
+                select_map:req.session.map,
+                NavRoom:NavRoom
+            });
+        }else{
+            res.render('createNav',{
+                ip:get_ip,
+                file_map:file_map
+            });
         }
 
+
+    
         
         
     }
@@ -105,20 +103,58 @@ exports.delete_nav = async (req, res) => {
     console.log(req.query);
     res.redirect(`/createNav/nav_room/?name_room=${req.query.name_room}&name_map=${req.query.name_map}`)
 };
+exports.update_nav = async (req, res) => {
+    let data = await model.modelNavRoom_out.findById(req.query.id)
+    res.render(`update`,{
+        ip:get_ip,
+        name_room:req.query.name_room,
+        name_map:req.query.name_map,
+        data:data
+    });
+
+};
+
+
 
 
 exports.insert_nav_action = async (req, res) => {
     console.log(req.body);
     let posi = JSON.parse(req.body.pos)
     // console.log(posi.pos);
-
+    
     await model.modelNavRoom_out.insertMany([{
         name:req.body.name,
         nav_room_name:req.body.name_room,
         pos:posi.pos,
-        color:req.body.color
+        color:req.body.color,
+        option:req.body.option
     }]);
     res.send({state:1});
+};
+exports.update_nav_action = async (req, res) => {
+    console.log(req.body);
+    let posi = JSON.parse(req.body.pos)
+    let id =req.body.id;
+    let doc ={
+        name:req.body.name,
+        pos: posi.pos,
+        color:req.body.color,
+        option:req.body.option
+    }
+
+    // await model.modelNavRoom_out.insertMany([{
+    //     name:req.body.name,
+    //     nav_room_name:req.body.name_room,
+    //     pos:posi.pos,
+    //     color:req.body.color
+    // }]);
+    model.modelNavRoom_out.findByIdAndUpdate( id , doc , function(err){
+        if(!err){
+            // console.log("Done Save");
+            res.send({state:1});
+        }
+    });
+    // res.send({state:1});
 };
 
 
@@ -147,6 +183,7 @@ exports.delete_room = async (req, res) => {
 
 exports.launch_map = async (req, res) => {
     console.log(req.body);
+    req.session.map = req.body.map;
     shell.exec('sh ./shell-script/close-map.sh ')
     shell.exec('sh ./shell-script/open-map.sh '+ req.body.map)
     res.redirect(`/createNav/?map=${req.body.map}`);

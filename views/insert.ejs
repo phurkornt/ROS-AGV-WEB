@@ -20,6 +20,10 @@
                     <span class="input-group-text" id="basic-addon1" >Color </span>
                     <input type="color" style="height: 38px;" class="form-control "  aria-label="Username" aria-describedby="basic-addon1" name="color">
                 </div>
+                <div class="form-check mb-3">
+                  <input class="form-check-input p-2" type="checkbox" name="option" id="flexCheckIndeterminate">
+                  <label class="form-check-label" for="flexCheckIndeterminate"> Stop at point </label>
+                </div>
                 
                 <div class="row mb-2">
                   <div class="d-grid col-4">
@@ -65,6 +69,8 @@
     function insert_to_db(name_room,name_map){
         let name = document.querySelector("input[name=name]").value;
         let color = document.querySelector("input[name=color]").value;
+        let option = document.querySelector("input[name=option]").checked;
+        option = Number(option)
         let pos = get_insert_pos
 
         // console.log(name_room,name_map);
@@ -81,6 +87,7 @@
             params.append('pos',pos_tranfrom);
             params.append('name_room',name_room);
             params.append('name_map',name_map);
+            params.append('option',option);
 
             axios({
                 url:'/createNav/insert_nav_action',
