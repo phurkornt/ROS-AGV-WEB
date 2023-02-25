@@ -1,5 +1,7 @@
-<%- include("partials/header") %>
+<%- include("../partials/header") %>
+
 <script src="nav2d.js"></script>
+
   <div class="container mt-3">
 
     <div class="row">
@@ -8,31 +10,27 @@
         <div class="card mt-3"  >
 
             <div class="card-body">
-              <h5 class="card-title text-center">Update Data</h5>
+              <h5 class="card-title text-center">Insert Data</h5>
              
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Name </span>
-                    <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="name" value="<%= data.name _%> ">
+                    <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="name">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1" >Color </span>
-                    <input type="color" style="height: 38px;" class="form-control "  aria-label="Username" aria-describedby="basic-addon1" name="color" value="<%= data.color _%>" >
+                    <input type="color" style="height: 38px;" class="form-control "  aria-label="Username" aria-describedby="basic-addon1" name="color">
                 </div>
-                
                 <div class="form-check mb-3">
-                  
-                  <input class="form-check-input p-2 " type="checkbox" name="option"  >
-             
+                  <input class="form-check-input p-2" type="checkbox" name="option" id="flexCheckIndeterminate">
                   <label class="form-check-label" for="flexCheckIndeterminate"> Stop at point </label>
                 </div>
-              
                 
                 <div class="row mb-2">
                   <div class="d-grid col-4">
                     <a href="/"  class="btn btn-secondary p-3 px-5 " >Cancle</a>
                   </div>
                   <div class="d-grid col-8">
-                    <button class="btn btn-success p-3 " onclick="update_into_db('<%=name_room%>' , '<%=name_map%>')" >Save</button>
+                    <button class="btn btn-success p-3 " onclick="insert_to_db('<%=name_room%>' , '<%=name_map%>')" >Save</button>
                   </div>
 
                 </div>
@@ -57,42 +55,33 @@
 
   </div>
 
-
+  
 
   <script src="page_nav_map.js"></script>
 
   <script src="/axios/axios.min.js"></script>
-
+  <!-- <script src="../node_modules/axios/dist/axios.min.js"></script> -->
   
   <script>
-    var str =  '<%- JSON.stringify(data)%>';
-    str = str.replace(/'/g, '"')
-    let obj = JSON.parse(str);
-    console.log("DEBUG",obj);
-    update(obj);
 
-    function update_into_db(name_room,name_map){
+    insert();
+
+    function insert_to_db(name_room,name_map){
         let name = document.querySelector("input[name=name]").value;
         let color = document.querySelector("input[name=color]").value;
         let option = document.querySelector("input[name=option]").checked;
         option = Number(option)
         let pos = get_insert_pos
 
+        // console.log(name_room,name_map);
         // check
-        if(name == ""){
-            alert("input Name data");
+        if(name == "" ||  pos == undefined){
+            alert("input all data");
         }else{
             // use axios
             let params =new URLSearchParams();
-
-            let pos_tranfrom;
-            if(pos == undefined){
-              pos_tranfrom = JSON.stringify(obj)
-            }else{
-              pos_tranfrom = JSON.stringify({pos:pos})
-            }
+            pos_tranfrom = JSON.stringify({pos:pos})
             // console.log("BE",pos_tranfrom);
-            params.append('id','<%- data._id %>');
             params.append('name',name);
             params.append('color',color);
             params.append('pos',pos_tranfrom);
@@ -100,16 +89,15 @@
             params.append('name_map',name_map);
             params.append('option',option);
 
-
             axios({
-                url:'/createNav/update_nav_action',
+                url:'/createNav/insert_nav_action',
                 method:'post',
                 data:params,
                 timeout:3000
             }).then((result)=>{
-                // alert("Update Done !");
+                // alert("Insert Done !");
                 window.location=`/createNav/nav_room/?name_room=${name_room}&name_map=${name_map}`;
-                console.log("Update DONE !");
+                console.log("insert DONE !");
             })
         }
 
@@ -123,18 +111,7 @@
   </script>
 
 
-<script>
-  let option_value = parseInt( '<%= data.option %>' )
-  let doc_option = document.querySelector("input[name=option]")
-  if( option_value === 1){
-    doc_option.checked = true;
-  }else if( option_value === 0){
-    doc_option.checked = false;
-  }
-</script>
 
-
-
-<%- include("partials/footer") %> 
+<%- include("../partials/footer") %> 
 
 

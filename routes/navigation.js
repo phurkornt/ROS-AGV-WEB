@@ -15,9 +15,10 @@ router.post('/delete', navController.delete);
 router.post('/update', navController.update_post);
 router.get('/update', navController.update_get);
 
-router.get('/move/:pos', navController.move);
+router.get('/moving/:pos', navController.move);
 
 router.get('/get_navroom', navController.get_navroom);
+router.get('/move', navController.navigation_move);
 // router.get('/login', loginController.login);
 
 module.exports = router;

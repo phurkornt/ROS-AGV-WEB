@@ -1,4 +1,4 @@
-<%- include("partials/header") %>
+<%- include("../partials/header") %>
 
 
 <script src="nav2d.js"></script>
@@ -6,7 +6,7 @@
   <div class="container">
     <div class="card mt-3" style="width: 100%;">
         <div class="card-body">
-          <h5 class="card-title text-center fs-2 fw-bolder">Navigation System</h5>
+          <h5 class="card-title text-center fs-2 fw-bolder">ระบบนำทาง</h5>
         </div>
   </div>
 
@@ -15,16 +15,16 @@
     
     <div class="row">
       
-      <div class="col-lg-6 col-md-6 ">
-
-        <div class="card mt-3"  >
-          
-          <% if (  posNow == 0 ) { %>
+        <div class="col-lg-3 col-md-3 "></div>
+        
+        <div class="col-lg-6 col-md-6 ">
             
+            <div class="card mt-3 "  >
+                
             
 
             <div class="card-body">
-              <h5 class="card-title">Configure</h5>
+              <h5 class="card-title">เลือกแผนที่ เเละ เลือกกลุ่มการเคลื่อนที่</h5>
 
               <div class="my-2">
                 <label for=""> Select Map</label>
@@ -57,68 +57,25 @@
               </form>
 
             </div>  
-            <!-- <button class="btn btn-danger p-3 mt-1 ps-5 pe-5" onclick="moveTopoint(1)">Control Move</button> -->
-            
-         <% }else{%>
-
-            <div class="card-body">
-              <h5 class="card-title">Moving To Pos : <%= posNow %> </h5>
- 
-            </div>  
-
-            <button class="btn btn-warning p-3 mt-1 ps-5 pe-5 " name="topause" onclick="">Pause</button>
-
-            <button class="btn btn-danger p-3 mt-1 ps-5 pe-5" name="tostop" onclick="">Stop</button>
-            
-            <div class="mb-5"></div>
-
-
-         <% }%>
 
         </div>
         
 
 
 
-      </div>
+        </div>
 
-      <div class="col-lg-6 col-md-6">
-        <div id="nav" style="text-align: center; " class="mt-3"></div>
-      </div>
+        <div class="col-lg-3 col-md-3 "></div>
+        
 
-      
     </div>
   </div>
 
 
 
 
-  <script src="page_nav_map.js"></script>
   <script src="/axios/axios.min.js"></script>
 
-  <script>
-
-    let pos = Number('<%-posNow%>')
-    var str =  '<%- JSON.stringify(data)%>';
-    str = str.replace(/'/g, '"')
-    obj = JSON.parse(str);
-
-    if(pos === 0){
-      // console.log("NOT AGAIN");
-      show_pos(obj);
-    }else{
-      // console.log("MOVE AGAIN");
-      move_to_pos( obj , {pos:pos,con:"move"} );
-    }
-    
-    function moveTopoint(pos){
-      window.location="/navigation/move/1";
-    }
-
-    function delect(){
-      return confirm("Are you confirm !");
-      
-    }
 
 
   </script>
@@ -168,8 +125,7 @@
     }
   </script>
 
-  <!-- <script src="nav2d.js"></script> -->
 
-<%- include("partials/footer") %> 
+<%- include("../partials/footer") %> 
 
 

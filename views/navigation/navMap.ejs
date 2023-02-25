@@ -1,14 +1,12 @@
-<%- include("partials/header") %>
+<%- include("../partials/header") %>
 
 
-
-
+<script src="nav2d.js"></script>
 
   <div class="container">
     <div class="card mt-3" style="width: 100%;">
         <div class="card-body">
-          <h5 class="card-title text-center fs-2 fw-bolder">Nav Stack Map : <%= name_map %>   </h5>
-
+          <h5 class="card-title text-center fs-2 fw-bolder">Navigation System Map : <%= name_map %></h5>
         </div>
   </div>
 
@@ -21,12 +19,13 @@
 
         <div class="card mt-3"  >
           
+          <% if (  posNow == 0 ) { %>
             
+            
+
             <div class="card-body">
-              <h5 class="card-title">room : <%= name_room %> </h5>
-
-              <a href="/createNav/insert_nav?name_room=<%=name_room%>&name_map=<%=name_map%>" class="btn btn-success py-1 " >insert</a>
-
+              <h5 class="card-title">Configure</h5>
+              <p>Plan : <%= name_room %></p>
               <table class="table table-striped mt-2 border-top text-center">
                 <thead class="thead-dark">
                     <th scope="col">Order</th>
@@ -37,7 +36,7 @@
                 </thead>
                 <tbody >
                   <% let n = 0; %>
-                  <% for(let i of posOut){%>
+                  <% for(let i of data){%>
                     <% n+=1; %>
                     <tr>
                       <td><%= n %></td>
@@ -60,27 +59,34 @@
                           </div>
                         </div>
                       </td>
-
-                      <td>
-                        <a href="/createNav/update_nav?name_room=<%=name_room%>&name_map=<%=name_map%>&id=<%=i._id%>" class="btn btn-warning py-1 " >EDIT</a>
-                        <a href="/createNav/delete_nav?name_room=<%=name_room%>&name_map=<%=name_map%>&id=<%=i._id%>" onclick="return confirm('Are you sure ?')" class="btn btn-danger py-1 " >Delete</a>
-                      </td>
                     </tr>
                   <%} %>
                     
                     
                 </tbody>
               </table>
-
-
-            
               
-  
+              
+
+              <button class="btn btn-success  p-3 mt-1 ps-5 pe-5 float-end" onclick="moveTopoint(1)">Start Moving</button>
+
+            </div>  
+            
+         <% }else{%>
+
+            <div class="card-body">
+              <h5 class="card-title">Moving To Pos : <%= posNow %> </h5>
+ 
             </div>  
 
-     
+            <button class="btn btn-warning p-3 mt-1 ps-5 pe-5 " name="topause" onclick="">Pause</button>
 
-         
+            <button class="btn btn-danger p-3 mt-1 ps-5 pe-5" name="tostop" onclick="">Stop</button>
+            
+            <div class="mb-5"></div>
+
+
+         <% }%>
 
         </div>
         
@@ -89,33 +95,48 @@
 
       </div>
 
-
-
       <div class="col-lg-6 col-md-6">
         <div id="nav" style="text-align: center; " class="mt-3"></div>
       </div>
 
-
+      
     </div>
   </div>
 
 
 
-  <script src="nav2d.js"></script>
+
   <script src="page_nav_map.js"></script>
-
-
+  <script src="/axios/axios.min.js"></script>
 
   <script>
-    var str =  '<%- JSON.stringify(posOut)%>';
+
+    let pos = Number('<%-posNow%>')
+    var str =  '<%- JSON.stringify(data)%>';
     str = str.replace(/'/g, '"')
     obj = JSON.parse(str);
-    show_pos(obj);
+
+    if(pos === 0){
+      // console.log("NOT AGAIN");
+      show_pos(obj);
+    }else{
+      // console.log("MOVE AGAIN");
+      move_to_pos( obj , {pos:pos,con:"move"} );
+    }
+    
+    function moveTopoint(pos){
+      window.location="/navigation/moving/1";
+    }
+
+    function delect(){
+      return confirm("Are you confirm !");
+      
+    }
+
 
   </script>
 
 
+<%- include("../partials/footer") %> 
 
-
-<%- include("partials/footer") %> 
 

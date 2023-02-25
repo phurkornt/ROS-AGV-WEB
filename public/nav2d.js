@@ -140,7 +140,7 @@ NAV2D.Navigator = function(a) {
                 // console.log("WWW");
                 b.cancel();
                 moveStop = true;
-                window.location="/navigation/move/0";
+                window.location="/navigation/moving/0";
             })
             
             b.on("result", function() {
@@ -150,9 +150,9 @@ NAV2D.Navigator = function(a) {
                     console.log("DONE POS : "+posNext);
                     // alert("FDSFSF")
                     if( posNext - posSet.length == 0 ){
-                        window.location="/navigation/move/0";
+                        window.location="/navigation/moving/0";
                     }else{
-                        window.location="/navigation/move/"+(posNext+1);
+                        window.location="/navigation/moving/"+(posNext+1);
                     }
                 }
                 

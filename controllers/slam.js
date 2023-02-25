@@ -9,7 +9,7 @@ exports.slam = async (req, res) => {
     if( req.session.login === undefined ){
         res.redirect('/login');
     }else{
-        res.render("scanMap",{
+        res.render("createMap/scanMap",{
             ip:get_ip,
             slam:req.session.slam
         });
@@ -24,5 +24,6 @@ exports.save_map = async (req, res) => {
 
 exports.launch_slam = async (req, res) => {
     // control_Status_process(1);
+    shell.exec('sh ./shell-script/open-createMap.sh')
     res.redirect('/slam');
 };

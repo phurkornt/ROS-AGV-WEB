@@ -37,7 +37,7 @@ exports.createNav = async (req, res) => {
 
         if( req.query.map != undefined ){
             let NavRoom = await model.modelNavRoom.find({"map":req.query.map})
-            res.render('createNav',{
+            res.render('createNav/createNav',{
                 ip:get_ip,
                 file_map:file_map,
                 select_map:req.query.map,
@@ -46,14 +46,14 @@ exports.createNav = async (req, res) => {
 
         }else if( req.session.map != undefined ){
             let NavRoom = await model.modelNavRoom.find({"map":req.session.map})
-            res.render('createNav',{
+            res.render('createNav/createNav',{
                 ip:get_ip,
                 file_map:file_map,
                 select_map:req.session.map,
                 NavRoom:NavRoom
             });
         }else{
-            res.render('createNav',{
+            res.render('createNav/createNav',{
                 ip:get_ip,
                 file_map:file_map
             });
@@ -72,9 +72,8 @@ exports.nav_room = async (req, res) => {
     for(let i = 0;i<posOut.length ; i++){
         posOut[i] = posOut[i].toObject(); 
     }
-    console.log(posOut);
-
-    res.render('nav_room',{
+    
+    res.render('createNav/nav_room',{
         ip:get_ip,
         name_room:req.query.name_room,
         name_map:req.query.name_map,
@@ -90,7 +89,7 @@ exports.insert_nav = async (req, res) => {
     //     name:req.body.name_room,
     //     map:req.body.name_map
     // }]);
-    res.render(`insert`,{
+    res.render(`createNav/insert`,{
         ip:get_ip,
         name_room:req.query.name_room,
         name_map:req.query.name_map
@@ -105,7 +104,7 @@ exports.delete_nav = async (req, res) => {
 };
 exports.update_nav = async (req, res) => {
     let data = await model.modelNavRoom_out.findById(req.query.id)
-    res.render(`update`,{
+    res.render(`createNav/update`,{
         ip:get_ip,
         name_room:req.query.name_room,
         name_map:req.query.name_map,
