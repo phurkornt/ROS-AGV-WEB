@@ -1,24 +1,64 @@
 
 const get_ip = require('../config/ip_config')
 const model = require('../config/db_config')
+const path = require('path');
+const fs = require('fs');
+const shell = require('shelljs');
+
+
 
 let NOWPOS = 0;
 
+async function get_file(){
+    try {
+        const directoryPath = path.join('/home/agv/agv/map');
+        let files = await fs.promises.readdir(directoryPath);
+        let output = [];
+        files.forEach(function (file) {
+            if( file.search(".yaml") >= 0  ){
+                file=file.replace('.yaml','')
+                output.push(file);
+            }
+        });
+        return output ;
+
+    } catch (err) {
+        console.error('Error occurred while reading directory!', err);
+        return [];
+    }
+}
 
 exports.navigation = async (req, res) => {
     if( req.session.login === undefined ){
         res.render('login',{ip:get_ip,status:0});
     }else{
-        model.modelPos.find({},(err,result)=>{
-            if(!err){
-                // console.log(result);
-                res.render("navMap",{data:result,posNow:NOWPOS,ip:get_ip});
-            }
-        })
+        let file_map = await get_file();
+        // for (let i of file_map){
+        //     navRoom[i] = await model.modelNavRoom.find({"map":i})
+        // }
+        res.render("navMap",{
+            file_map:file_map,
+            data:[],
+            posNow:NOWPOS,
+            ip:get_ip
+        });
     }
 };
+
+exports.get_navroom = async (req, res) => {
+    console.log(req.query);
+    let navRoom = await model.modelNavRoom.find({"map":req.query.select_map})
+    let data =[]
+    for(let i of navRoom){
+        data.push(i.name)
+    }
+    console.log(data);
+    res.send({navRoom:data})
+};
+
 exports.launch_nav = async (req, res) => {
-    // control_Status_process(2);
+    // control_Status_process(2);'
+    console.log("debug",req.body);
     res.redirect('/navigation');
 };
 
@@ -75,7 +115,7 @@ exports.update_get = async (req, res) => {
     })
 };
 exports.move = async (req, res) => {
-    NOWPOS= req.params.pos;
+    NOWPOS = req.params.pos;
     console.log("nowpos : ",NOWPOS);
     // if( dataset.length < NOWPOS)NOWPOS = 0;
     res.redirect('/navigation')

@@ -17,6 +17,7 @@ router.get('/update', navController.update_get);
 
 router.get('/move/:pos', navController.move);
 
+router.get('/get_navroom', navController.get_navroom);
 // router.get('/login', loginController.login);
 
 module.exports = router;

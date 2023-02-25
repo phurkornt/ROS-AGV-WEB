@@ -21,52 +21,49 @@
           
           <% if (  posNow == 0 ) { %>
             
+            
+
             <div class="card-body">
               <h5 class="card-title">Configure</h5>
-              <form action="launch_nav" method="post" class="">
+
+              <div class="my-2">
+                <label for=""> Select Map</label>
+                <select id = "select_map" class="form-select"  onchange="make_plan()" aria-label="Default select example">
+                  <option selected></option>
+                  <% for (let i of file_map){%>
+                      <option value='<%=i%>' ><%= i %></option>
+                  <%} %>
+                </select>
+                
+
+              </div>
+
+              <div class="my-2">
+                <label for=""> Select plan</label>
+
+                <select id = "select_plan" class="form-select" aria-label="Default select example">
+                  
+            
+                </select>
+
+              </div>
+
+              
+
+              <form action="launch_nav" onsubmit="return vali()" method="post" class="">
                     <button type="submit" class="btn btn-danger">เปิดระบบการนำทาง</button>
+                    <input name="map" type="text" class="d-none">
+                    <input name="plan" type="text" class="d-none">
               </form>
-              <a href="insert" class="btn btn-success p-2 mt-2 float-end" >insert</a>
 
-
-              <table class="table table-striped mt-2 border-top ">
-                <thead class="thead-dark">
-                    <tr><th scope="col">Posname</th><th scope="col">Color</th><th scope="col">Config</th></tr>
-                </thead>
-                <tbody>
-                    
-                    <%  for(let i =0 ;i<data.length;i++){ %>
-                    <tr>
-                        <td><%= data[i].name%></td>
-                        <td>
-                          <input type="color" name="" id="" value="<%= data[i].color _%>" disabled>
-                        </td>
-                        <td>
-                            
-                          <a href="update?id=<%= data[i]._id _%>" class="btn btn-warning py-1 " >EDIT</a>
-
-                          <form action="delete" method="post" class="d-inline pw-3">
-                              <button type="submit" class="btn btn-danger btn-sm" onclick="return delect()"  name="delete" value="<%= data[i]._id _%>">Delete</button>
-                          </form>
-
-                        </td>
-
-                    <%} %>
-
-                    </tr>
-                </tbody>
-              </table>
-  
             </div>  
-            <button class="btn btn-danger p-3 mt-1 ps-5 pe-5" onclick="moveTopoint(1)">Control Move</button>
-
+            <!-- <button class="btn btn-danger p-3 mt-1 ps-5 pe-5" onclick="moveTopoint(1)">Control Move</button> -->
+            
          <% }else{%>
 
             <div class="card-body">
               <h5 class="card-title">Moving To Pos : <%= posNow %> </h5>
-              <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> -->
-              <!-- <p class="card-text"></p> -->
-
+ 
             </div>  
 
             <button class="btn btn-warning p-3 mt-1 ps-5 pe-5 " name="topause" onclick="">Pause</button>
@@ -97,7 +94,8 @@
 
 
   <script src="page_nav_map.js"></script>
-  
+  <script src="/axios/axios.min.js"></script>
+
   <script>
 
     let pos = Number('<%-posNow%>')
@@ -125,7 +123,50 @@
 
   </script>
 
+  <script>
+    function vali(){
+      let select_map = document.querySelector('#select_map').value;
+      let se = document.querySelector('#select_plan').value 
 
+      let to_return = true;
+      if( select_map === '' || se === '' ){
+        to_return = false;
+        alert("Empty data")
+      }
+      document.querySelector("input[name=map]").value = select_map;
+      document.querySelector("input[name=plan]").value = se;
+      return to_return;
+    }
+    function make_plan(){
+      let select_map = document.querySelector('#select_map');
+      let element = document.querySelector('#select_plan');
+      while (element.firstChild) {
+        element.removeChild(element.firstChild);
+      }
+      
+      if(select_map.value !=''){
+        axios({
+                url:'/navigation/get_navroom',
+                method:'get',
+                params:{select_map:select_map.value},
+                timeout:3000
+            }).then((result)=>{
+                let nav_room = result.data.navRoom;
+                if(nav_room.length > 0 ){
+                  let se = document.querySelector('#select_plan')
+
+                  for(let i of nav_room){
+                    const para = document.createElement("option");
+                    para.text=i
+                    para.value = i
+                    se.appendChild(para)
+                  }
+                }
+                console.log(nav_room);
+            })
+      }
+    }
+  </script>
 
   <!-- <script src="nav2d.js"></script> -->
 
