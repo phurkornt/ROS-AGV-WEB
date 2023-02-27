@@ -5,6 +5,8 @@ const path = require('path');
 const fs = require('fs');
 const shell = require('shelljs');
 
+const STATE = require('../config/get_status')
+
 
 
 let NOWPOS = 0;
@@ -29,6 +31,7 @@ async function get_file(){
 }
 
 exports.navigation = async (req, res) => {
+    
     if( req.session.login === undefined ){
         res.render('login',{ip:get_ip,status:0});
     }else{
@@ -54,7 +57,7 @@ exports.get_navroom = async (req, res) => {
     for(let i of navRoom){
         data.push(i.name)
     }
-    console.log(data);
+    // console.log(data);
     res.send({navRoom:data})
 };
 
@@ -62,7 +65,9 @@ exports.launch_nav = async (req, res) => {
 
     
     console.log("debug",req.body);
+    shell.exec('sh ./shell-script/open-map.sh '+ req.body.map)
     shell.exec('sh ./shell-script/open-navMap.sh')
+
     req.session.nav = "on";
     req.session.nav_map = req.body.map;
     req.session.nav_plan = req.body.plan;

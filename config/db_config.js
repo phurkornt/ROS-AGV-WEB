@@ -26,6 +26,8 @@ const nav_room_back = new mongoose.Schema({
     nav_room_name:String
 })
 
+
+
 /*
     !Note
     Status 
@@ -35,7 +37,7 @@ const nav_room_back = new mongoose.Schema({
 */
 const now_process = new mongoose.Schema({
     status:Number,
-    id:Number
+    title:String
 })
 
 

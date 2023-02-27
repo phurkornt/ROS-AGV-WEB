@@ -6,6 +6,8 @@ const shell = require('shelljs')
 
 const model = require('../config/db_config')
 
+const STATE = require('../config/get_status')
+
 
 async function get_file(){
     try {

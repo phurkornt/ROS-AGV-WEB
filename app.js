@@ -1,39 +1,3 @@
-// -------------------------- GLOBLE VARIABLE --------------------------
-/*
-    !Note
-    Status 
-       0   not run
-       1   create map
-       2   nav map
-
-*/
-
-let GLOBLE_Status_process = 0 ;
-
-function control_Status_process(input){
-    // if( GLOBLE_Status_process === 0 ){
-    //     if(input === 1){
-    //         shell.exec('sh ./shell-script/open-createMap.sh')
-    //     }else if(input === 2){
-    //         console.log(2);
-
-    //         shell.exec('sh ./shell-script/open-navMap.sh')
-    //     }
-    // }else if( GLOBLE_Status_process === 1){
-    //     if(input === 2){
-    //         shell.exec('sh ./shell-script/close-navMap.sh')
-    //         shell.exec('sh ./shell-script/open-createMap.sh')
-    //     }
-    // }else if( GLOBLE_Status_process === 2){
-    //     if(input === 1){
-    //         shell.exec('sh ./shell-script/close-navMap.sh')
-    //         shell.exec('sh ./shell-script/open-createMap.sh')
-    //     }
-    // }
-    // GLOBLE_Status_process = input ;
-}
-
-// -------------------------- GLOBLE VARIABLE --------------------------
 
 
 const path = require('path');
@@ -52,6 +16,21 @@ const ejs = require('ejs');
 const app = express();
 
 const session = require('express-session')
+
+// ------------ init ------------
+const STATE = require('./config/get_status')
+STATE.set_status(0);
+
+/**
+ *  0 init
+ *  1 create nav
+ *  2 create map
+ *  3 navigation
+ */
+
+// ------------ init ------------
+
+
 
 
 app.set('view engine', 'ejs');
