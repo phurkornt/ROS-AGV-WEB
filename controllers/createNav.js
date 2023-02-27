@@ -29,21 +29,23 @@ async function get_file(){
 }
 
 exports.createNav = async (req, res) => {
+
+
+
     if( req.session.login === undefined ){
         res.redirect('/login');
     }else{
-        // console.log(req.session.map);
-        // console.log(req.session.map);
+        let state = await STATE.get_status();
+        
         let file_map = await get_file();
-
-
         if( req.query.map != undefined ){
             let NavRoom = await model.modelNavRoom.find({"map":req.query.map})
             res.render('createNav/createNav',{
                 ip:get_ip,
                 file_map:file_map,
                 select_map:req.query.map,
-                NavRoom:NavRoom
+                NavRoom:NavRoom,
+                status:state
             });
 
         }else if( req.session.map != undefined ){
@@ -52,19 +54,17 @@ exports.createNav = async (req, res) => {
                 ip:get_ip,
                 file_map:file_map,
                 select_map:req.session.map,
-                NavRoom:NavRoom
+                NavRoom:NavRoom,
+                status:state
             });
         }else{
             res.render('createNav/createNav',{
                 ip:get_ip,
-                file_map:file_map
+                file_map:file_map,
+                status:state
             });
         }
 
-
-    
-        
-        
     }
 };
 
@@ -143,12 +143,6 @@ exports.update_nav_action = async (req, res) => {
         option:req.body.option
     }
 
-    // await model.modelNavRoom_out.insertMany([{
-    //     name:req.body.name,
-    //     nav_room_name:req.body.name_room,
-    //     pos:posi.pos,
-    //     color:req.body.color
-    // }]);
     model.modelNavRoom_out.findByIdAndUpdate( id , doc , function(err){
         if(!err){
             // console.log("Done Save");
@@ -183,11 +177,28 @@ exports.delete_room = async (req, res) => {
 
 
 exports.launch_map = async (req, res) => {
-    console.log(req.body);
-    req.session.map = req.body.map;
-    shell.exec('sh ./shell-script/close-map.sh ')
-    shell.exec('sh ./shell-script/open-map.sh '+ req.body.map)
-    res.redirect(`/createNav/?map=${req.body.map}`);
+    let state = await STATE.get_status();
+    if( state.status == 0 ){
+        STATE.set_status(1);
+
+        req.session.map = req.body.map;
+        shell.exec('sh ./shell-script/close-map.sh ')
+        shell.exec('sh ./shell-script/open-map.sh '+ req.body.map)
+
+        res.redirect(`/createNav/?map=${req.body.map}`);
+        
+    }else{
+        res.redirect(`/createNav`);
+    }
+};
+exports.close_map = async (req, res) => {
+    let state = await STATE.get_status();
+    if( state.status == 1 ){
+        req.session.map = undefined
+        shell.exec('sh ./shell-script/close-map.sh ')
+        STATE.set_status(0);
+    }
+    res.redirect(`/createNav`);
 };
 
 

@@ -1,8 +1,16 @@
 
 const model = require('./db_config')
+/**
+ *  0 init
+ *  1 create nav
+ *  2 create map
+ *  3 navigation
+ */
+
+// ------------ init ------------
 
 module.exports.get_status = async function (){
-    let status = await model.modelStatus.find({"title":"status"});
+    let status = await model.modelStatus.findOne({"title":"status"});
     return status;
 }
 

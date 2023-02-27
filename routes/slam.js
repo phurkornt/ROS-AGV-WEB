@@ -10,5 +10,6 @@ router.get('/', slamController.slam);
 router.post('/save_map', slamController.save_map); 
 router.post('/launch_slam', slamController.launch_slam); 
 
+router.post('/close_slam', slamController.close_slam); 
 
 module.exports = router;

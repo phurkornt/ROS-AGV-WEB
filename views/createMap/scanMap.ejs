@@ -45,7 +45,9 @@
                     <button type="submit" class="btn btn-danger">เปิดระบบสร้างเเผนที่</button>
                 </form>
                 <br>
-                <form action="save_map" method="post" >
+
+
+                <form action="save_map" onsubmit="return vailName()" method="post" >
                     <span>Map name : </span>
                     <input type="text" class="form-control my-1" name="map_name" placeholder="" >
                     <button type="submit" class="btn btn-success ">บันทึกแผนที่</button>
@@ -89,6 +91,13 @@
 
             </div>
 
+            <% if(locals.status && status.status == 2 ){%>
+                <form class="my-2" action="close_slam" method="post">
+                    <div class=" ">
+                      <button type="submit" class="btn btn-danger p-3  mb-3">Close System</button>
+                    </div>
+                </form>
+            <%} %>
 
 
         </div>
@@ -108,6 +117,18 @@
 <script src="page_scanMap.js"></script>
 
 <script>
+ function vailName(){
+    let isTrue = false;
+    let name = document.querySelector("input[name=map_name]").value;
+    if( name.trim() !="" ){
+        isTrue = true;
+    }else{
+        alert("Write name for map")
+    }
+
+    return isTrue ; 
+ }
+
 
 </script>
 

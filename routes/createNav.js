@@ -20,6 +20,7 @@ router.get('/update_nav', createNavController.update_nav);
 router.post('/insert_nav_action', createNavController.insert_nav_action);
 router.post('/update_nav_action', createNavController.update_nav_action);
 
+router.post('/close_map', createNavController.close_map);
 
 
 

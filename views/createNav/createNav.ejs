@@ -23,13 +23,15 @@
           
             
             <div class="card-body">
-              <h5 class="card-title">Configure</h5>
+            <h5 class="card-title ">Configure</h5>
+  
+              
 
               <% if( file_map.length > 0 ){ %>
 
 
                 
-                <form class="row g-3" action="launch_map" method="post">
+                <form class="row" action="launch_map" method="post">
                     
                     <div class="col-auto">
                         <select id="select_map" class="form-select" aria-label="Default select example" name="map">
@@ -46,12 +48,16 @@
                     </div>
                     
                 </form>
+                
+                
+                
+                
 
                 <% if (locals.select_map ){%>
 
-                  <div class="d-flex  justify-content-start mb-1">
+                  <div class="d-flex  justify-content-start ">
                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      add room
+                      Insert
                     </button>
             
                   </div>
@@ -154,11 +160,16 @@
          
 
         </div>
-        
+          <% if(locals.status && status.status == 1 ){%>
+            <form class="my-2" action="close_map" method="post">
+                <div class=" ">
+                  <button type="submit" class="btn btn-danger p-3  mb-3">Close System</button>
+                </div>
+            </form>
+          <%} %>
+        </div>
 
 
-
-      </div>
 
 
 

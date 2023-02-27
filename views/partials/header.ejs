@@ -64,5 +64,24 @@
             <!-- <a class="nav-item nav-link disabled" href="#">Disabled</a> -->
           </div>
         </div>
+        <p class="nav-item nav-link fs-5 float-end text-success fw-bold mx-3">
+          <% if(locals.status){%>
+            <% if(status.status == 1){%>
+
+              <%= "กำลังใช้ระบบสร้างการนำทาง" %> 
+
+              <%}else if(status.status == 2){%>
+
+                <%= "กำลังใช้ระบบสร้างแผนที่" %> 
+
+              <%}else if(status.status == 3){%>
+
+                <%= "กำลังใช้การนำทาง" %> 
+                
+              <%} %>
+     
+          <%} %>
+        </p>
+
     </nav>
     

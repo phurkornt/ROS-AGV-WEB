@@ -93,11 +93,16 @@ NAV2D.Navigator = function(a) {
         }
         
     }
+
     function move_maker(){
+
+        // tests
+       
+        // 
+
         // console.log("function Move_maker on ")
         if( posNext-1 < posSet.length ){
             // console.log("WOW" ,posSet.length)
-
             
             let posNow = posSet[ posNext-1 ].pos;
             var b = new ROSLIB.Goal({
@@ -138,6 +143,7 @@ NAV2D.Navigator = function(a) {
             
             document.querySelector("button[name=tostop]").addEventListener('click',()=>{
                 // console.log("WWW");
+
                 b.cancel();
                 moveStop = true;
                 window.location="/navigation/moving/0";
@@ -379,6 +385,18 @@ NAV2D.Navigator = function(a) {
 
 
                 console.log("Data : " , u);
+                // console.log("Data : " , u.position);
+                // --------------------------------- Code init pose ---------------------------------
+                // let cmdVel = new ROSLIB.Topic({
+                // ros : ros,
+                // name : '/initialpose',
+                // messageType : 'geometry_msgs/PoseWithCovarianceStamped Message'
+                // });
+                // console.log("HI");
+                // let twist = new ROSLIB.Message({
+                //     header: {stamp: {sec: 0, nanosec: 0}, frame_id: "map"}, pose: { pose: {position: u.position , orientation: u.orientation}, } 
+                // });
+                // cmdVel.publish(twist);
 
                 if( control_mode =="insert"){
                     insert(u);

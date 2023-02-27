@@ -16,8 +16,18 @@
       width : 600,
       height : 600
     });
+    // Setup the map client.
+    // var gridClient = new ROS2D.OccupancyGridClient({
+    //   ros : ros,
+    //   rootObject : viewer.scene
+    // });
+    // // Scale the canvas to fit to the map
+    // gridClient.on('change', function(){
+    //   viewer.scaleToDimensions(gridClient.currentGrid.width, gridClient.currentGrid.height);
+    // });
     
     
+
     function insert(){
       // For insert position in db
       var nav = NAV2D.OccupancyGridClientNav({
