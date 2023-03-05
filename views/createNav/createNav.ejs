@@ -66,7 +66,6 @@
                   <table class="table table-striped mt-2 border-top ">
                     <thead class="thead-dark">
                         <th scope="col">name</th>
-                        <th scope="col">number</th>
                         <th scope="col">Config</th>
                     </thead>
                     <tbody>
@@ -74,7 +73,6 @@
                         <% for(let i of NavRoom){%>
                           <tr>
                             <td><%= i.name %></td>
-                            <td><%= i.map%></td>
                             <td>
                               <a href="nav_room\?name_room=<%=i.name%>&name_map=<%= select_map %>" class="btn btn-primary opacity-75 py-1 " >Nav Stack</a>
                               <a href="delete_room\?name_room=<%=i.name%>&name_map=<%= select_map %>" onclick="return confirm('Are you sure ?')" class="btn btn-danger py-1 " >Delete</a>

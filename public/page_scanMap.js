@@ -131,37 +131,37 @@ var gridClient = new ROS2D.OccupancyGridClient({
 
 
     document.querySelector('#m-f').addEventListener('click',function(){
-      clearInterval(timer);
-      timer = setInterval(function () {
-        
+      // clearInterval(timer);
+      // timer = setInterval(function () {
+        // 
         const [lin,ang] = getSpeed();
         move(lin, 0);
-      }, 50);
+      // }, 50);
     })
 
     document.querySelector('#m-b').addEventListener('click',function(){
-      clearInterval(timer);
-      timer = setInterval(function () {
+      // clearInterval(timer);
+      // timer = setInterval(function () {
         const [lin,ang] = getSpeed();
         move(-lin, 0);
-      }, 50);
+      // }, 50);
     })
     document.querySelector('#m-l').addEventListener('click',function(){
-      clearInterval(timer);
-      timer = setInterval(function () {
+      // clearInterval(timer);
+      // timer = setInterval(function () {
         const [lin,ang] = getSpeed();
         move(0, ang);
-      }, 50);
+      // }, 50);
     })
     document.querySelector('#m-r').addEventListener('click',function(){
-      clearInterval(timer);
-      timer = setInterval(function () {
+      // clearInterval(timer);
+      // timer = setInterval(function () {
         const [lin,ang] = getSpeed();
         move(0,-ang);
-      }, 50);
+      // }, 50);
     })
     document.querySelector('#m-s').addEventListener('click',function(){
-      clearInterval(timer);
+      // clearInterval(timer);
       move(0, 0);
     })
 

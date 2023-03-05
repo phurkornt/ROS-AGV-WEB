@@ -65,7 +65,18 @@
         posSet:data
       });
     }
-    
+    function nav_pos(data,now_pos){
+      var nav = NAV2D.OccupancyGridClientNav({
+        topic:'run',
+        ros : ros,
+        rootObject : viewer.scene,
+        viewer : viewer,
+        serverName:'move_base',
+        withOrientation:true,
+        posSet:data,
+        posNow:now_pos
+      });
+    }
 
     function move_to_pos(data,pos){
       // For move position 
@@ -79,5 +90,18 @@
         posSet:data,
         posNext:pos.pos,
         posCon:pos.con
+      });
+    }
+
+
+    function init_pose(input){
+      // For show position 
+      var nav = NAV2D.OccupancyGridClientNav({
+        topic:input,
+        ros : ros,
+        rootObject : viewer.scene,
+        viewer : viewer,
+        serverName:'move_base',
+        withOrientation:true
       });
     }

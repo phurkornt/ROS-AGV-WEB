@@ -1,6 +1,7 @@
 let control_mode = "";
 let posNext ;
 let posSet;
+let posNow = 0;
 let posCon;
 
 var counter = 0 ;
@@ -96,11 +97,6 @@ NAV2D.Navigator = function(a) {
 
     function move_maker(){
 
-        // tests
-       
-        // 
-
-        // console.log("function Move_maker on ")
         if( posNext-1 < posSet.length ){
             // console.log("WOW" ,posSet.length)
             
@@ -271,6 +267,69 @@ NAV2D.Navigator = function(a) {
         // global Data
         get_insert_pos = a;
     }
+    function nav_pos(){
+
+            console.log("DE",posSet,posNow);
+            var b = new ROSLIB.Goal({
+                actionClient: i,
+                goalMessage: {
+                    target_pose: {
+                        header: {
+                            frame_id: "map"
+                        },
+                        pose: posSet[posNow].pos
+                    }
+                }
+            });
+
+            // name="tostop"
+            
+            b.send();
+            let moveStop = false;
+
+            // let pause = document.querySelector("button[name=topause]")
+            // pause.addEventListener('click',()=>{
+            //     if(pause.innerText == 'Pause'){
+            //         pause.classList.remove('btn-warning');
+            //         pause.classList.add('btn-success')
+            //         pause.innerText = 'Go';
+            //         b.cancel();
+            //         moveStop = true;
+                    
+            //     }else if(pause.innerText == 'Go'){
+            //         pause.classList.remove('btn-success');
+            //         pause.classList.add('btn-warning')
+            //         pause.innerText = 'Pause';
+            //         window.location="/navigation";
+            //     }
+         
+            // })
+
+            
+            // document.querySelector("button[name=tostop]").addEventListener('click',()=>{
+            //     // console.log("WWW");
+
+            //     b.cancel();
+            //     moveStop = true;
+            //     window.location="/navigation/moving/0";
+            // })
+            
+            b.on("result", function() {
+                alert("DONE");
+                // if(moveStop == true){
+
+                // }else{
+                //     console.log("DONE POS : "+posNext);
+                //     // alert("FDSFSF")
+                //     if( posNext - posSet.length == 0 ){
+                //         window.location="/navigation/moving/0";
+                //     }else{
+                //         window.location="/navigation/moving/"+(posNext+1);
+                //     }
+                // }
+                
+            })
+    }
 
 
     var c = this;
@@ -289,9 +348,9 @@ NAV2D.Navigator = function(a) {
     // console.log(c.rootObject);
     h = c.rootObject instanceof createjs.Stage ? c.rootObject : c.rootObject.getStage();
     var j = new ROS2D.NavigationArrow({
-        size: 25,
-        strokeSize: 1,
-        fillColor: createjs.Graphics.getRGB(255, 128, 0, .66),
+        size: 15,
+        strokeSize: 4,
+        fillColor: createjs.Graphics.getRGB(255, 150, 0, .66),
         pulse: !0
     });
     j.visible = !1,
@@ -384,24 +443,28 @@ NAV2D.Navigator = function(a) {
                 // b(u)
 
 
-                console.log("Data : " , u);
+                // console.log("Data : " , u);
                 // console.log("Data : " , u.position);
                 // --------------------------------- Code init pose ---------------------------------
-                // let cmdVel = new ROSLIB.Topic({
-                // ros : ros,
-                // name : '/initialpose',
-                // messageType : 'geometry_msgs/PoseWithCovarianceStamped Message'
-                // });
-                // console.log("HI");
-                // let twist = new ROSLIB.Message({
-                //     header: {stamp: {sec: 0, nanosec: 0}, frame_id: "map"}, pose: { pose: {position: u.position , orientation: u.orientation}, } 
-                // });
-                // cmdVel.publish(twist);
+                
 
                 if( control_mode =="insert"){
                     insert(u);
                 }else if( control_mode =="update"){
                     update(u);
+                }
+
+                if( control_mode =="init_pose"){
+                    let cmdVel = new ROSLIB.Topic({
+                    ros : ros,
+                    name : '/initialpose',
+                    messageType : 'geometry_msgs/PoseWithCovarianceStamped Message'
+                    });
+                    console.log("HI");
+                    let twist = new ROSLIB.Message({
+                        header: {stamp: {sec: 0, nanosec: 0}, frame_id: "map"}, pose: { pose: {position: u.position , orientation: u.orientation}, } 
+                    });
+                    cmdVel.publish(twist);
                 }
 
                 
@@ -416,6 +479,11 @@ NAV2D.Navigator = function(a) {
         }
         if (control_mode =="update"){
             show_makerOne();
+        }
+        if (control_mode =="run"){
+            show_maker();
+            nav_pos();
+            // show_makerOne();
         }
         
         if( posNext > 0 ){
@@ -439,7 +507,7 @@ NAV2D.OccupancyGridClientNav = function(a) {
 
     // for control mode 
     control_mode = a.topic || "";
-    // console.log('control_mode',control_mode);
+    console.log('control_mode',control_mode);
 
     var b = this;
 
@@ -453,15 +521,18 @@ NAV2D.OccupancyGridClientNav = function(a) {
     this.withOrientation = a.withOrientation || !1,
     this.navigator = null;
     
-
+    
     posSet = a.posSet
     console.log("DATA",posSet);
+    if(control_mode === "run"){
+        posNow = parseInt( a.posNow )
+        console.log(a);
+    }
+    // posNext = a.posNext
+    // console.log("POS NEXT : ",posNext);
 
-    posNext = a.posNext
-    console.log("POS NEXT : ",posNext);
-
-    posCon = a.posCon;
-    console.log("POS Con : ",posCon);
+    // posCon = a.posCon;
+    // console.log("POS Con : ",posCon);
 
 
 

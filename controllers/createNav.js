@@ -57,6 +57,7 @@ exports.createNav = async (req, res) => {
                 NavRoom:NavRoom,
                 status:state
             });
+
         }else{
             res.render('createNav/createNav',{
                 ip:get_ip,
@@ -166,7 +167,8 @@ exports.insert_room = async (req, res) => {
 
 exports.delete_room = async (req, res) => {
     await model.modelNavRoom.deleteOne({
-        name:req.query.name_room
+        name:req.query.name_room,
+        map:req.query.name_map
     });
 
     res.redirect(`/createNav/?map=${req.query.name_map}`);
@@ -196,6 +198,7 @@ exports.close_map = async (req, res) => {
     if( state.status == 1 ){
         req.session.map = undefined
         shell.exec('sh ./shell-script/close-map.sh ')
+        shell.exec('sh ./shell-script/close-createMap.sh ')
         STATE.set_status(0);
     }
     res.redirect(`/createNav`);

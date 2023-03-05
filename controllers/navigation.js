@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const shell = require('shelljs');
 
-const STATE = require('../config/get_status')
+const STATE = require('../config/get_status');
 
 
 
@@ -35,13 +35,15 @@ exports.navigation = async (req, res) => {
     if( req.session.login === undefined ){
         res.render('login',{ip:get_ip,status:0});
     }else{
+        let state = await STATE.get_status();
         if(req.session.nav_map === undefined){
             let file_map = await get_file();
             res.render("navigation/navConfig",{
                 file_map:file_map,
                 data:[],
                 posNow:NOWPOS,
-                ip:get_ip
+                ip:get_ip,
+                status:state
             });
         }else{
             res.redirect('/navigation/move')
@@ -63,33 +65,75 @@ exports.get_navroom = async (req, res) => {
 
 exports.launch_nav = async (req, res) => {
 
-    
-    console.log("debug",req.body);
-    shell.exec('sh ./shell-script/open-map.sh '+ req.body.map)
-    shell.exec('sh ./shell-script/open-navMap.sh')
-
-    req.session.nav = "on";
-    req.session.nav_map = req.body.map;
-    req.session.nav_plan = req.body.plan;
-
-    res.redirect('move');
+    let state = await STATE.get_status();
+    if( state.status == 0 ){
+        console.log("DO this" ,req.body.map);
+        STATE.set_status(3);
+        shell.exec('sh ./shell-script/open-navMap.sh')
+        setTimeout(function() {
+            shell.exec('sh ./shell-script/open-map.sh '+ req.body.map)
+        }, 3000);
+        
+        req.session.nav = "on";
+        req.session.nav_map = req.body.map;
+        res.redirect('move');
+    }else{
+        res.redirect('navigation');
+    }
 };
+
+
 
 exports.navigation_move = async (req, res) => {
-    let posOut = await model.modelNavRoom_out.find({"nav_room_name":req.session.nav_plan})
-    for(let i = 0;i<posOut.length ; i++){
-        posOut[i] = posOut[i].toObject(); 
-    }
-    console.log(posOut);
 
-    res.render("navigation/navMap",{
-        data:posOut,
-        name_map:req.session.nav_map,
-        name_room:req.session.nav_plan,
-        posNow:NOWPOS,
-        ip:get_ip
-    });
+    let NavRoom = await model.modelNavRoom.find({"map":req.session.nav_map})
+    console.log(req.session.nav_map);
+    console.log(NavRoom);
+    if( req.session.nav_plan !== undefined){
+
+        let nav_stack = await model.modelNavPos.findOne();
+        let get_pos = await model.modelNavRoom_out.find({
+            nav_room_name:nav_stack.plan
+        })
+
+        console.log("test",get_pos);
+        let now_pos = nav_stack.pos;
+        // WHEN MOVING
+        // Qurey pos and now_pos
+        res.render("navigation/navMap",{
+            data:NavRoom,
+            name_map:req.session.nav_map,
+            isMoving:1,
+            get_pos:get_pos,
+            now_pos:now_pos,
+            ip:get_ip
+
+        });
+
+    }else{
+        
+        res.render("navigation/navMap",{
+            data:NavRoom,
+            name_map:req.session.nav_map,
+            isMoving:0,
+            ip:get_ip
+        });
+    }
 };
+exports.navigation_moving = async (req, res) => {
+
+    req.session.nav_plan = req.body.plan
+    STATE.set_pos(0,req.body.map,req.body.plan);
+
+    console.log("DE " , req.body);
+    res.redirect("move");
+
+};
+
+
+
+
+
 
 exports.insert_post = async (req, res) => {
     let posi = JSON.parse(req.body.pos)
@@ -144,8 +188,8 @@ exports.update_get = async (req, res) => {
     })
 };
 exports.move = async (req, res) => {
-    NOWPOS = req.params.pos;
-    console.log("nowpos : ",NOWPOS);
-    // if( dataset.length < NOWPOS)NOWPOS = 0;
-    res.redirect('/navigation')
+    // NOWPOS = req.params.pos;
+    // console.log("nowpos : ",NOWPOS);
+    // // if( dataset.length < NOWPOS)NOWPOS = 0;
+    // res.redirect('/navigation')
 };

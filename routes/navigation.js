@@ -18,7 +18,14 @@ router.get('/update', navController.update_get);
 router.get('/moving/:pos', navController.move);
 
 router.get('/get_navroom', navController.get_navroom);
+
 router.get('/move', navController.navigation_move);
+
+// router.get('/init_pose', navController.init_pose);
 // router.get('/login', loginController.login);
+
+router.post('/move', navController.navigation_moving);
+
+
 
 module.exports = router;

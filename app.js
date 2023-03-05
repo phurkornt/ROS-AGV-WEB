@@ -20,6 +20,7 @@ const session = require('express-session')
 // ------------ init ------------
 const STATE = require('./config/get_status')
 STATE.set_status(0);
+STATE.set_pos(0);
 
 /**
  *  0 init
@@ -72,6 +73,6 @@ app.use('/createNav',createNavRoutes);
 app.use('/',loginRoutes);
 
 
-app.listen( process.env.PORT || 5000,()=>{
+app.listen( process.env.PORT || 3000,()=>{
     console.log('Server is running ...');
 });

@@ -24,12 +24,10 @@
             
 
             <div class="card-body">
-              <h5 class="card-title">เลือกแผนที่ เเละ เลือกกลุ่มการเคลื่อนที่</h5>
+              <h5 class="card-title">เลือกแผนที่</h5>
 
               <div class="my-2">
-                <label for=""> Select Map</label>
-                <select id = "select_map" class="form-select"  onchange="make_plan()" aria-label="Default select example">
-                  <option selected></option>
+                <select id = "select_map"  class="form-select"   aria-label="Default select example">
                   <% for (let i of file_map){%>
                       <option value='<%=i%>' ><%= i %></option>
                   <%} %>
@@ -38,22 +36,14 @@
 
               </div>
 
-              <div class="my-2">
-                <label for=""> Select plan</label>
-
-                <select id = "select_plan" class="form-select" aria-label="Default select example">
-                  
-            
-                </select>
-
-              </div>
+              
 
               
 
-              <form action="launch_nav" onsubmit="return vali()" method="post" class="">
+              <form action="launch_nav" onsubmit="insert()" method="post" class="">
                     <button type="submit" class="btn btn-danger">เปิดระบบการนำทาง</button>
                     <input name="map" type="text" class="d-none">
-                    <input name="plan" type="text" class="d-none">
+                    <!-- <input name="plan" type="text" class="d-none"> -->
               </form>
 
             </div>  
@@ -81,48 +71,56 @@
   </script>
 
   <script>
-    function vali(){
+    function insert(){
       let select_map = document.querySelector('#select_map').value;
-      let se = document.querySelector('#select_plan').value 
-
-      let to_return = true;
-      if( select_map === '' || se === '' ){
-        to_return = false;
-        alert("Empty data")
-      }
       document.querySelector("input[name=map]").value = select_map;
-      document.querySelector("input[name=plan]").value = se;
-      return to_return;
     }
-    function make_plan(){
-      let select_map = document.querySelector('#select_map');
-      let element = document.querySelector('#select_plan');
-      while (element.firstChild) {
-        element.removeChild(element.firstChild);
-      }
-      
-      if(select_map.value !=''){
-        axios({
-                url:'/navigation/get_navroom',
-                method:'get',
-                params:{select_map:select_map.value},
-                timeout:3000
-            }).then((result)=>{
-                let nav_room = result.data.navRoom;
-                if(nav_room.length > 0 ){
-                  let se = document.querySelector('#select_plan')
+    // function vali(){
+    //   let select_map = document.querySelector('#select_map').value;
+    //   let se = document.querySelector('#select_plan').value 
 
-                  for(let i of nav_room){
-                    const para = document.createElement("option");
-                    para.text=i
-                    para.value = i
-                    se.appendChild(para)
-                  }
-                }
-                console.log(nav_room);
-            })
-      }
-    }
+    //   let to_return = true;
+    //   if( select_map === '' || se === '' ){
+    //     to_return = false;
+    //     alert("Empty data")
+    //   }
+    //   document.querySelector("input[name=map]").value = select_map;
+    //   document.querySelector("input[name=plan]").value = se;
+    //   return to_return;
+    // }
+
+
+
+
+    // function make_plan(){
+    //   let select_map = document.querySelector('#select_map');
+    //   let element = document.querySelector('#select_plan');
+    //   while (element.firstChild) {
+    //     element.removeChild(element.firstChild);
+    //   }
+      
+    //   if(select_map.value !=''){
+    //     axios({
+    //             url:'/navigation/get_navroom',
+    //             method:'get',
+    //             params:{select_map:select_map.value},
+    //             timeout:3000
+    //         }).then((result)=>{
+    //             let nav_room = result.data.navRoom;
+    //             if(nav_room.length > 0 ){
+    //               let se = document.querySelector('#select_plan')
+
+    //               for(let i of nav_room){
+    //                 const para = document.createElement("option");
+    //                 para.text=i
+    //                 para.value = i
+    //                 se.appendChild(para)
+    //               }
+    //             }
+    //             console.log(nav_room);
+    //         })
+    //   }
+    // }
   </script>
 
 
