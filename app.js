@@ -20,7 +20,7 @@ const session = require('express-session')
 // ------------ init ------------
 const STATE = require('./config/get_status')
 STATE.set_status(0);
-STATE.set_pos(0);
+STATE.set_pos(0,'','');
 
 /**
  *  0 init

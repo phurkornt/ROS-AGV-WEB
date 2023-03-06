@@ -66,6 +66,34 @@ var gridClient = new ROS2D.OccupancyGridClient({
   });
 
   
+//  ---------------------- ZOOM ----------------------
+function getMousePos(canvas, evt) {
+  let rect = canvas.getBoundingClientRect();
+  return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+  };
+}
+  let canvas = document.getElementById("nav");
+  canvas.addEventListener("click", function (evt) {
+    let mousePos = getMousePos(canvas, evt);
+    let zoomIN = document.querySelector("#zoomplus").classList
+    let zoomOUT = document.querySelector("#zoomminus").classList
+    let zoom = new ROS2D.ZoomView({
+      ros: ros,
+      rootObject: viewer.scene
+    });
+    if(zoomIN.value.indexOf("active") >= 0){
+      zoom.startZoom(mousePos.x, mousePos.y);
+      zoom.zoom(1.5);
+    }else if(zoomOUT.value.indexOf("active") >= 0){
+      zoom.startZoom(mousePos.x, mousePos.y);
+      zoom.zoom(0.5);
+    }
+  }, false);
+
+
+  
   // createJoystick = function () {
   //   var options = {
   //     zone: document.getElementById('zone_joystick'),

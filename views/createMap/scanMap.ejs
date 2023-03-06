@@ -43,6 +43,18 @@
 
                 <form action="launch_slam" method="post" class="">
                     <button type="submit" class="btn btn-danger">เปิดระบบสร้างเเผนที่</button>
+                    <p>map distan <b>Write</b></p>
+                    
+                    <div class="input-group my-3">
+                        <span class="input-group-text" >x</span>
+                        <input name="x" type="number" class="form-control" value="5" >
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" >y</span>
+                        <input name="y" type="number" class="form-control" value="5" >
+                    </div>
+
                 </form>
                 <br>
 
@@ -102,8 +114,12 @@
 
         </div>
 
-
+        
         <div class="col-lg-6 col-md-6">
+            <div class="input-group mb-3">
+                <p class="zoom-ctrl btn btn-primary" id="zoomplus" data-bs-toggle="button">Zoom in</p>
+                <p class="zoom-ctrl btn btn-primary" id="zoomminus"data-bs-toggle="button">Zoom out</p>
+            </div>
             <div id="nav" class="center"></div>
         </div>
 

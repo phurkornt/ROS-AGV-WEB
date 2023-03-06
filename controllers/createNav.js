@@ -184,7 +184,7 @@ exports.launch_map = async (req, res) => {
         STATE.set_status(1);
 
         req.session.map = req.body.map;
-        shell.exec('sh ./shell-script/close-map.sh ')
+        // shell.exec('sh ./shell-script/close-map.sh ')
         shell.exec('sh ./shell-script/open-map.sh '+ req.body.map)
 
         res.redirect(`/createNav/?map=${req.body.map}`);

@@ -212,7 +212,7 @@ NAV2D.Navigator = function(a) {
        
         let rgb = hexToRgb(document.querySelector("input[type=color]").value);
         var d = new ROS2D.NavigationArrow({
-            size: 12,
+            size: 10,
             strokeSize: 0.8,
             fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
             pulse: !0
@@ -249,7 +249,7 @@ NAV2D.Navigator = function(a) {
        
         let rgb = hexToRgb(document.querySelector("input[type=color]").value);
         var d = new ROS2D.NavigationArrow({
-            size: 12,
+            size: 10,
             strokeSize: 1,
             fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
             pulse: !0
@@ -269,66 +269,109 @@ NAV2D.Navigator = function(a) {
     }
     function nav_pos(){
 
-            console.log("DE",posSet,posNow);
-            var b = new ROSLIB.Goal({
-                actionClient: i,
-                goalMessage: {
-                    target_pose: {
-                        header: {
-                            frame_id: "map"
-                        },
-                        pose: posSet[posNow].pos
-                    }
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+              r: parseInt(result[1], 16),
+              g: parseInt(result[2], 16),
+              b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        let pos_show = posSet[posSet.length-1].pos;
+
+        let rgb = hexToRgb(posSet[posSet.length-1].color);
+
+        var d = new ROS2D.NavigationArrow({
+            size: 0.25,
+            strokeSize: 0.008,
+            fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
+            pulse: !0
+        });
+
+        d.x = pos_show.position.x,
+        d.y = -pos_show.position.y,
+        d.rotation = h.rosQuaternionToGlobalTheta(pos_show.orientation),
+        d.scaleX = 1 / h.scaleX,
+        d.scaleY = 1 / h.scaleY,
+        c.rootObject.addChild(d)
+
+        var b = new ROSLIB.Goal({
+            actionClient: i,
+            goalMessage: {
+                target_pose: {
+                    header: {
+                        frame_id: "map"
+                    },
+                    pose: posSet[posNow].pos
                 }
-            });
+            }
+        });
 
-            // name="tostop"
-            
-            b.send();
-            let moveStop = false;
+        b.send();
 
-            // let pause = document.querySelector("button[name=topause]")
-            // pause.addEventListener('click',()=>{
-            //     if(pause.innerText == 'Pause'){
-            //         pause.classList.remove('btn-warning');
-            //         pause.classList.add('btn-success')
-            //         pause.innerText = 'Go';
-            //         b.cancel();
-            //         moveStop = true;
-                    
-            //     }else if(pause.innerText == 'Go'){
-            //         pause.classList.remove('btn-success');
-            //         pause.classList.add('btn-warning')
-            //         pause.innerText = 'Pause';
-            //         window.location="/navigation";
-            //     }
-         
-            // })
+        let moveStop = false;
 
-            
-            // document.querySelector("button[name=tostop]").addEventListener('click',()=>{
-            //     // console.log("WWW");
-
-            //     b.cancel();
-            //     moveStop = true;
-            //     window.location="/navigation/moving/0";
-            // })
-            
-            b.on("result", function() {
-                alert("DONE");
-                // if(moveStop == true){
-
-                // }else{
-                //     console.log("DONE POS : "+posNext);
-                //     // alert("FDSFSF")
-                //     if( posNext - posSet.length == 0 ){
-                //         window.location="/navigation/moving/0";
-                //     }else{
-                //         window.location="/navigation/moving/"+(posNext+1);
-                //     }
-                // }
+        let pause = document.querySelector("button[name=topause]")
+        pause.addEventListener('click',()=>{
+            if(pause.innerText == 'Pause'){
+                pause.classList.remove('btn-warning');
+                pause.classList.add('btn-success')
+                pause.innerText = 'Go';
+                b.cancel();
+                moveStop = true;
                 
+            }else if(pause.innerText == 'Go'){
+                pause.classList.remove('btn-success');
+                pause.classList.add('btn-warning')
+                pause.innerText = 'Pause';
+                window.location="/navigation";
+            }
+        
+        })
+
+        
+        document.querySelector("button[name=tostop]").addEventListener('click',()=>{
+            b.cancel();
+            axios({
+                url:'/navigation/cancle_move',
+                method:'post',
+                timeout:3000
+            }).then((result)=>{
+                window.location=`/`;
             })
+        })
+        
+        b.on("result", function() {
+            
+            if( moveStop === false ){
+
+                if( posNow < posSet.length-1 ){
+                    console.log("DONE POS 1");
+                    let params =new URLSearchParams();
+                    params.append('posNow',posNow+1);
+                    axios({
+                        url:'/navigation/update_move',
+                        method:'post',
+                        data:params,
+                        timeout:3000
+                    }).then((result)=>{
+                        window.location=`/`;
+                        console.log("Update DONE !");
+                    })
+                }else if( posNow === posSet.length-1 ){
+                    b.cancel();
+                    axios({
+                        url:'/navigation/cancle_move',
+                        method:'post',
+                        timeout:3000
+                    }).then((result)=>{
+                        window.location=`/`;
+                    })
+                }
+            }
+            
+        })
     }
 
 
@@ -347,9 +390,11 @@ NAV2D.Navigator = function(a) {
     }); this.rootObject.addChild(j);
     // console.log(c.rootObject);
     h = c.rootObject instanceof createjs.Stage ? c.rootObject : c.rootObject.getStage();
+
+    // ------------------- Real POS -------------------
     var j = new ROS2D.NavigationArrow({
-        size: 15,
-        strokeSize: 4,
+        size: 7,
+        strokeSize: 1,
         fillColor: createjs.Graphics.getRGB(255, 150, 0, .66),
         pulse: !0
     });
@@ -481,7 +526,7 @@ NAV2D.Navigator = function(a) {
             show_makerOne();
         }
         if (control_mode =="run"){
-            show_maker();
+            // show_maker();
             nav_pos();
             // show_makerOne();
         }

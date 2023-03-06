@@ -26,6 +26,13 @@ router.get('/move', navController.navigation_move);
 
 router.post('/move', navController.navigation_moving);
 
+router.post('/update_move', navController.update_navigation_moving);
+router.post('/cancle_move', navController.cancle_navigation_moving);
+
+router.post('/close_navigation', navController.close_navigation);
+
+
+
 
 
 module.exports = router;

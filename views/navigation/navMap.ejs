@@ -67,29 +67,34 @@
                 </tbody>
               </table>
               
-              
+              <% if(isMoving == 0){%>
+
+                <form class="my-2" action="close_navigation" method="post">
+                  <div class=" ">
+                    <button type="submit" class="btn btn-danger p-3  mb-3">
+                      Close System
+                    </button>
+                  </div>
+                </form>
+
+              <%}%>
 
               <!-- <button class="btn btn-success  p-3 mt-1 ps-5 pe-5 float-end" onclick="moveTopoint(1)">Start Moving</button> -->
-
+                 
             </div>  
-            
-
-
-           
-
-
 
         </div>
         
-
-
-
       </div>
 
       <div class="col-lg-6 col-md-6">
         
-        <button id="init_pose" type="button" onclick="set_init_pose()" class="btn btn-primary" data-bs-toggle="button" >init pose</button>
-        <div id="nav" style="text-align: center; " class="mt-3">
+        <div class="input-group mb-1">
+          <p id="init_pose" onclick="set_init_pose()" class="btn btn-primary" data-bs-toggle="button" >init pose</p>
+          <p class="zoom-ctrl btn btn-primary" id="zoomplus"  data-bs-toggle="button">Zoom in</p>
+          <p class="zoom-ctrl btn btn-primary" id="zoomminus" data-bs-toggle="button">Zoom out</p>
+        </div>
+        <div id="nav" style="text-align: center; " class="">
         </div>
       </div>
 

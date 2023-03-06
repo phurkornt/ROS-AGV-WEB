@@ -60,7 +60,7 @@ NAV2D.ImageMapClientNav = function(a) {
     });
     h = c.rootObject instanceof createjs.Stage ? c.rootObject : c.rootObject.getStage();
     var j = new ROS2D.NavigationArrow({
-        size: 15,
+        size: 10,
         strokeSize: 1,
         fillColor: createjs.Graphics.getRGB(255, 128, 0, .66),
         pulse: !0

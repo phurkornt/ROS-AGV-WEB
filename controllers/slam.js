@@ -31,11 +31,14 @@ exports.save_map = async (req, res) => {
 };
 
 exports.launch_slam = async (req, res) => {
+    let x = req.body.x;
+    let y = req.body.y;
+    console.log(x,y,"DEG");
     let state = await STATE.get_status();
     if( state.status == 0 ){
         STATE.set_status(2);
         
-        shell.exec('sh ./shell-script/open-createMap.sh')
+        shell.exec(`sh ./shell-script/open-createMap.sh ${x} ${y}`)
     }
     res.redirect('/slam');
 };

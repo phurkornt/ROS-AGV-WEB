@@ -130,8 +130,34 @@ exports.navigation_moving = async (req, res) => {
 
 };
 
+exports.update_navigation_moving = async (req, res) => {
+    STATE.set_pos(req.body.posNow);
+    // console.log("DE " , req.body);
+    res.send({status:1})
+};
+
+exports.cancle_navigation_moving = async (req, res) => {
+    req.session.nav_plan = undefined;
+    STATE.set_pos(0,'',''); 
+    res.send({status:1})
+};
 
 
+
+
+exports.close_navigation = async (req, res) => {
+
+    let state = await STATE.get_status();
+    if( state.status == 3 ){
+        req.session.nav_map = undefined;
+        req.session.nav_plan = undefined;
+        STATE.set_status(0);
+        shell.exec('sh ./shell-script/close-navMap.sh')
+        shell.exec('sh ./shell-script/close-map.sh ')
+    }
+    res.redirect('/navigation');
+
+};
 
 
 
