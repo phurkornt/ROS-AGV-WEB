@@ -78,12 +78,16 @@ NAV2D.Navigator = function(a) {
 
             let rgb = hexToRgb(posSet[i].color);
 
-            var d = new ROS2D.NavigationArrow({
-                size: 0.25,
-                strokeSize: 0.008,
-                fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
-                pulse: !0
+            var d = new ROS2D.NavigationImage ({
+                size:1,
+                image:`http://${ip}:3000/move.svg`
             });
+            // var d = new ROS2D.NavigationArrow({
+            //     size: 0.25,
+            //     strokeSize: 0.008,
+            //     fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
+            //     pulse: !0
+            // });
       
             d.x = posNow.position.x,
             d.y = -posNow.position.y,
@@ -268,7 +272,7 @@ NAV2D.Navigator = function(a) {
         get_insert_pos = a;
     }
     function nav_pos(){
-
+        console.log("VIEWS",posSet);
         function hexToRgb(hex) {
             var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
             return result ? {
@@ -343,22 +347,91 @@ NAV2D.Navigator = function(a) {
         })
         
         b.on("result", function() {
+            // if( moveStop === false ){
+
+            //     if( posNow < posSet.length-1 ){
+            //         console.log("DONE POS 1");
+            //         let params =new URLSearchParams();
+            //         params.append('posNow',posNow+1);
+            //         axios({
+            //             url:'/navigation/update_move',
+            //             method:'post',
+            //             data:params,
+            //             timeout:3000
+            //         }).then((result)=>{
+            //             window.location=`/`;
+            //             console.log("Update DONE !");
+            //         })
+            //     }else if( posNow === posSet.length-1 ){
+            //         console.log("CANCLE   ");
+            //         b.cancel();
+            //         axios({
+            //             url:'/navigation/cancle_move',
+            //             method:'post',
+            //             timeout:3000
+            //         }).then((result)=>{
+            //             window.location=`/`;
+            //         })
+            //     }
+            // }
             
             if( moveStop === false ){
-
+               
                 if( posNow < posSet.length-1 ){
-                    console.log("DONE POS 1");
-                    let params =new URLSearchParams();
-                    params.append('posNow',posNow+1);
-                    axios({
-                        url:'/navigation/update_move',
-                        method:'post',
-                        data:params,
-                        timeout:3000
-                    }).then((result)=>{
-                        window.location=`/`;
-                        console.log("Update DONE !");
-                    })
+                    if( posSet[posNow].option == 1 ){
+
+                        let set_time = setInterval(function(){
+
+                         
+                            let listener = new ROSLIB.Topic({
+                                ros : ros,
+                                name : '/agv_switch',
+                                messageType : 'std_msgs/String'
+                            });
+                            listener.subscribe(function(message) {
+                                let mes = message.data
+
+                                if(mes == '1'){
+                                    let params =new URLSearchParams();
+                                    params.append('posNow',posNow+1);
+                                    axios({
+                                        url:'/navigation/update_move',
+                                        method:'post',
+                                        data:params,
+                                        timeout:3000
+                                    }).then((result)=>{
+                                        window.location=`/`;
+                                        console.log("Update DONE !");
+                                    })
+                                    clearInterval(set_time);
+                                }
+
+                                listener.unsubscribe();
+                                
+                            });
+
+
+                        },300);
+
+                        
+                        
+
+
+                    }else if( posSet[posNow].option == 0 ){
+                        console.log("DONE POS 1");
+                        // EXpression for push Button
+                        let params =new URLSearchParams();
+                        params.append('posNow',posNow+1);
+                        axios({
+                            url:'/navigation/uzpdate_move',
+                            method:'post',
+                            data:params,
+                            timeout:3000
+                        }).then((result)=>{
+                            window.location=`/`;
+                            console.log("Update DONE !");
+                        })
+                    }
                 }else if( posNow === posSet.length-1 ){
                     b.cancel();
                     axios({
@@ -526,14 +599,14 @@ NAV2D.Navigator = function(a) {
             show_makerOne();
         }
         if (control_mode =="run"){
-            // show_maker();
+            show_maker();
             nav_pos();
             // show_makerOne();
         }
         
-        if( posNext > 0 ){
-            move_maker();
-        }
+        // if( posNext > 0 ){
+        //     move_maker();
+        // }
 
 
         this.rootObject.addEventListener("stagemousedown", function(a) {

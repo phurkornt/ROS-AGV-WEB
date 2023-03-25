@@ -2241,10 +2241,10 @@ var ROS2D = (function (exports, createjs, ROSLIB) {
           });
         }
       };
-
+	  
       image.onload = paintImage.bind(this);
       image.src = image_url;
-
+	  
       var calculateScale = function(_size){
         return _size / image.width;
       };

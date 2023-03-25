@@ -195,3 +195,22 @@ function getMousePos(canvas, evt) {
 
 
   }
+
+
+
+
+  // let mes ="";
+  // let listener = new ROSLIB.Topic({
+  //   ros : ros,
+  //   name : '/mcu-topic',
+  //   messageType : 'std_msgs/String'
+  // });
+  // listener.subscribe(function(message) {
+  //   mes = message.data
+  //   // console.log('Received message on ' + listener.name + ': ' + message.data);
+  //   // listener.unsubscribe();
+  // });
+  // document.body.addEventListener('click',function(){
+  //     console.log(mes);
+  // })    
+  

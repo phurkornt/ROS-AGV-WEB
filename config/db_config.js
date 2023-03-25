@@ -13,6 +13,12 @@ const nav_room = new mongoose.Schema({
     name:String,
     map:String
 })
+
+/**
+ * option : 
+ *          1  : wait 
+ *          0  : go
+ */
 const nav_room_out = new mongoose.Schema({
     name:String,
     pos:"mixed",
