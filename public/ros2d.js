@@ -2210,7 +2210,6 @@ var ROS2D = (function (exports, createjs, ROSLIB) {
       var image = new Image();
 
       super(image);
-
       var paintImage = function() {
         var scale = calculateScale(size);
         this.alpha = alpha;
@@ -2244,7 +2243,6 @@ var ROS2D = (function (exports, createjs, ROSLIB) {
 	  
       image.onload = paintImage.bind(this);
       image.src = image_url;
-	  
       var calculateScale = function(_size){
         return _size / image.width;
       };

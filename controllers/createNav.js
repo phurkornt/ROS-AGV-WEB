@@ -177,15 +177,17 @@ exports.delete_room = async (req, res) => {
 };
 
 
-
+// ----------------------- OPEN MAP -----------------------
 exports.launch_map = async (req, res) => {
     let state = await STATE.get_status();
     if( state.status == 0 ){
         STATE.set_status(1);
 
         req.session.map = req.body.map;
+        
         // shell.exec('sh ./shell-script/close-map.sh ')
-        shell.exec('sh ./shell-script/open-map.sh '+ req.body.map)
+        ch = shell.exec('sh ./shell-script/open-map.sh '+ req.body.map ,{async:true})
+        console.log(ch);
 
         res.redirect(`/createNav/?map=${req.body.map}`);
         
@@ -197,8 +199,10 @@ exports.close_map = async (req, res) => {
     let state = await STATE.get_status();
     if( state.status == 1 ){
         req.session.map = undefined
-        shell.exec('sh ./shell-script/close-map.sh ')
-        shell.exec('sh ./shell-script/close-createMap.sh ')
+        shell.exec('xdotool windowactivate --sync $(xdotool search --name "map.launch") key --clearmodifiers alt+F4' )
+        // shell.exec('sh ./shell-script/close-map.sh ' , {async:true})
+    
+        // shell.exec('sh ./shell-script/close-createMap.sh ')
         STATE.set_status(0);
     }
     res.redirect(`/createNav`);

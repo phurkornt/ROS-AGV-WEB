@@ -45,8 +45,12 @@ exports.launch_slam = async (req, res) => {
 exports.close_slam = async (req, res) => {
     let state = await STATE.get_status();
     if( state.status == 2 ){
-        STATE.set_status(0);
+        console.log("DO THISS" ,shell.dirs());
         shell.exec('sh ./shell-script/close-createMap.sh')
+        shell.exec('sh ./shell-script/close-createMap.sh')
+        shell.exec('sh ./shell-script/close-createMap.sh')
+        shell.exec('sh ./shell-script/close-createMap.sh')
+        STATE.set_status(0);
     }
     res.redirect('/slam');
 };

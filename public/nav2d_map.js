@@ -59,11 +59,16 @@ NAV2D.ImageMapClientNav = function(a) {
         serverName: e
     });
     h = c.rootObject instanceof createjs.Stage ? c.rootObject : c.rootObject.getStage();
-    var j = new ROS2D.NavigationArrow({
-        size: 10,
-        strokeSize: 1,
-        fillColor: createjs.Graphics.getRGB(255, 128, 0, .66),
-        pulse: !0
+    // var j = new ROS2D.NavigationArrow({
+    //     size: 10,
+    //     strokeSize: 1,
+    //     fillColor: createjs.Graphics.getRGB(255, 128, 0, .66),
+    //     pulse: !0
+    // });
+    var j = new ROS2D.NavigationImage ({
+        size:1.2,
+        image:`http://${ip}:3000/robot.svg`,
+        pulse:1
     });
     j.visible = !1, this.rootObject.addChild(j);
     var k = !1,

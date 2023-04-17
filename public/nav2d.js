@@ -79,7 +79,7 @@ NAV2D.Navigator = function(a) {
             let rgb = hexToRgb(posSet[i].color);
 
             var d = new ROS2D.NavigationImage ({
-                size:1,
+                size:0.8,
                 image:`http://${ip}:3000/move.svg`
             });
             // var d = new ROS2D.NavigationArrow({
@@ -182,12 +182,16 @@ NAV2D.Navigator = function(a) {
 
         console.log("debug", rgb )
 
-        var d = new ROS2D.NavigationArrow({
-            size: 0.2,
-            strokeSize: 0.01,
-            fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
-            pulse: !0
+        var d = new ROS2D.NavigationImage ({
+            size:0.8,
+            image:`http://${ip}:3000/move.svg`
         });
+        // var d = new ROS2D.NavigationArrow({
+        //     size: 0.2,
+        //     strokeSize: 0.01,
+        //     fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
+        //     pulse: !0
+        // });
     
         d.x = posNow.position.x,
         d.y = -posNow.position.y,
@@ -215,12 +219,16 @@ NAV2D.Navigator = function(a) {
         
        
         let rgb = hexToRgb(document.querySelector("input[type=color]").value);
-        var d = new ROS2D.NavigationArrow({
-            size: 10,
-            strokeSize: 0.8,
-            fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
-            pulse: !0
+        var d = new ROS2D.NavigationImage ({
+            size:0.8,
+            image:`http://${ip}:3000/move.svg`
         });
+        // var d = new ROS2D.NavigationArrow({
+        //     size: 10,
+        //     strokeSize: 0.8,
+        //     fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
+        //     pulse: !0
+        // });
 
         d.x = a.position.x,
         d.y = -a.position.y,
@@ -252,12 +260,16 @@ NAV2D.Navigator = function(a) {
         
        
         let rgb = hexToRgb(document.querySelector("input[type=color]").value);
-        var d = new ROS2D.NavigationArrow({
-            size: 10,
-            strokeSize: 1,
-            fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
-            pulse: !0
+        var d = new ROS2D.NavigationImage ({
+            size:0.8,
+            image:`http://${ip}:3000/move.svg`
         });
+        // var d = new ROS2D.NavigationArrow({
+        //     size: 10,
+        //     strokeSize: 1,
+        //     fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
+        //     pulse: !0
+        // });
 
         d.x = a.position.x,
         d.y = -a.position.y,
@@ -286,12 +298,16 @@ NAV2D.Navigator = function(a) {
 
         let rgb = hexToRgb(posSet[posSet.length-1].color);
 
-        var d = new ROS2D.NavigationArrow({
-            size: 0.25,
-            strokeSize: 0.008,
-            fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
-            pulse: !0
+        var d = new ROS2D.NavigationImage ({
+            size:0.8,
+            image:`http://${ip}:3000/move.svg`
         });
+        // var d = new ROS2D.NavigationArrow({
+        //     size: 0.25,
+        //     strokeSize: 0.008,
+        //     fillColor: createjs.Graphics.getRGB(rgb.r, rgb.g, rgb.b, .66),
+        //     pulse: !0
+        // });
 
         d.x = pos_show.position.x,
         d.y = -pos_show.position.y,
@@ -378,6 +394,7 @@ NAV2D.Navigator = function(a) {
             if( moveStop === false ){
                
                 if( posNow < posSet.length-1 ){
+
                     if( posSet[posNow].option == 1 ){
 
                         let set_time = setInterval(function(){
@@ -411,7 +428,7 @@ NAV2D.Navigator = function(a) {
                             });
 
 
-                        },300);
+                        },200);
 
                         
                         
@@ -423,7 +440,7 @@ NAV2D.Navigator = function(a) {
                         let params =new URLSearchParams();
                         params.append('posNow',posNow+1);
                         axios({
-                            url:'/navigation/uzpdate_move',
+                            url:'/navigation/update_move',
                             method:'post',
                             data:params,
                             timeout:3000
@@ -465,11 +482,16 @@ NAV2D.Navigator = function(a) {
     h = c.rootObject instanceof createjs.Stage ? c.rootObject : c.rootObject.getStage();
 
     // ------------------- Real POS -------------------
-    var j = new ROS2D.NavigationArrow({
-        size: 7,
-        strokeSize: 1,
-        fillColor: createjs.Graphics.getRGB(255, 150, 0, .66),
-        pulse: !0
+    // var j = new ROS2D.NavigationArrow({
+    //     size: 7,
+    //     strokeSize: 1,
+    //     fillColor: createjs.Graphics.getRGB(255, 150, 0, .66),
+    //     pulse: !0
+    // });
+    var j = new ROS2D.NavigationImage ({
+        size:1.8,
+        image:`http://${ip}:3000/robot.svg`,
+        pulse:1
     });
     j.visible = !1,
     this.rootObject.addChild(j);
