@@ -46,3 +46,7 @@ exports.vertify_login = async (req, res) => {
         res.render('login',{ip:get_ip,status:1});
     }
 };
+
+
+
+

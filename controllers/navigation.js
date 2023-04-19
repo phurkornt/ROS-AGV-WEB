@@ -7,13 +7,14 @@ const shell = require('shelljs');
 
 const STATE = require('../config/get_status');
 
+let node_manager = require('../config/node_manager');
 
 
 let NOWPOS = 0;
 
 async function get_file(){
     try {
-        const directoryPath = path.join('/home/agv/agv/map');
+        const directoryPath = path.join('/home/agv/agv/config/manage_map');
         let files = await fs.promises.readdir(directoryPath);
         let output = [];
         files.forEach(function (file) {
@@ -69,10 +70,22 @@ exports.launch_nav = async (req, res) => {
     if( state.status == 0 ){
         console.log("DO this" ,req.body.map);
         STATE.set_status(3);
-        shell.exec('sh ./shell-script/open-navMap.sh')
+
+        node_manager.send_data({
+            topic:"opennav",
+            script:`roslaunch /home/agv/agv/config/manage_launch/navigation-p-test.launch`,
+            mode:"start"
+        });
+
+
+        // shell.exec('sh ./shell-script/open-navMap.sh')
         setTimeout(function() {
-            shell.exec('sh ./shell-script/open-map.sh '+ req.body.map)
-        }, 3000);
+            node_manager.send_data({
+                topic:"nav_map",
+                script:`rosrun map_server map_server /home/agv/agv/config/manage_map/${req.body.map}.yaml`,
+                mode:"start"
+            });
+        }, 500);
         
         req.session.nav = "on";
         req.session.nav_map = req.body.map;
@@ -152,8 +165,21 @@ exports.close_navigation = async (req, res) => {
         req.session.nav_map = undefined;
         req.session.nav_plan = undefined;
         STATE.set_status(0);
-        shell.exec('sh ./shell-script/close-navMap.sh')
-        shell.exec('sh ./shell-script/close-map.sh ')
+
+        node_manager.send_data({
+            topic:"opennav",
+            mode:"stop"
+        });
+        setTimeout(function() {
+            node_manager.send_data({
+                topic:"nav_map",
+                mode:"stop"
+            });
+        }, 500);
+        
+        // shell.exec('sh ./shell-script/open-navMap.sh')
+        // shell.exec('sh ./shell-script/close-navMap.sh')
+        // shell.exec('sh ./shell-script/close-map.sh ')
     }
     res.redirect('/navigation');
 

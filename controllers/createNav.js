@@ -8,10 +8,12 @@ const model = require('../config/db_config')
 
 const STATE = require('../config/get_status')
 
+var node_manager = require('../config/node_manager');
+
 
 async function get_file(){
     try {
-        const directoryPath = path.join('/home/agv/agv/map');
+        const directoryPath = path.join('/home/agv/agv/config/manage_map');
         let files = await fs.promises.readdir(directoryPath);
         let output = [];
         files.forEach(function (file) {
@@ -179,15 +181,17 @@ exports.delete_room = async (req, res) => {
 
 // ----------------------- OPEN MAP -----------------------
 exports.launch_map = async (req, res) => {
+
     let state = await STATE.get_status();
     if( state.status == 0 ){
+        const dataset={
+            topic:"openmap",
+            script:`rosrun map_server map_server /home/agv/agv/config/manage_map/${req.body.map}.yaml`,
+            mode:"start"
+        }
+        node_manager.send_data(dataset);
         STATE.set_status(1);
-
         req.session.map = req.body.map;
-        
-        // shell.exec('sh ./shell-script/close-map.sh ')
-        ch = shell.exec('sh ./shell-script/open-map.sh '+ req.body.map ,{async:true})
-        console.log(ch);
 
         res.redirect(`/createNav/?map=${req.body.map}`);
         
@@ -199,10 +203,11 @@ exports.close_map = async (req, res) => {
     let state = await STATE.get_status();
     if( state.status == 1 ){
         req.session.map = undefined
-        shell.exec('xdotool windowactivate --sync $(xdotool search --name "map.launch") key --clearmodifiers alt+F4' )
-        // shell.exec('sh ./shell-script/close-map.sh ' , {async:true})
-    
-        // shell.exec('sh ./shell-script/close-createMap.sh ')
+        const dataset={
+            topic:"openmap",
+            mode:"stop"
+        }
+        node_manager.send_data(dataset);
         STATE.set_status(0);
     }
     res.redirect(`/createNav`);

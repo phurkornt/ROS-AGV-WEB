@@ -1,8 +1,16 @@
 
 
+
+
+// const pub = nh.advertise('/node_manager', 'std_msgs/String');
+// pub.publish({ data: '{ \"topic\":\"map\" , \"script\":\"roslaunch map.launch\" , \"mode\":\"start\"   }' });
+
+
 const path = require('path');
 
-const rosnodejs = require('rosnodejs');
+
+
+
 const express = require('express');
 
 const execSync = require('child_process').execSync;
@@ -21,6 +29,11 @@ const session = require('express-session')
 const STATE = require('./config/get_status')
 STATE.set_status(0);
 STATE.set_pos(0,'','');
+
+const test_manage = require('./config/node_manager')
+test_manage.test_send_data();
+
+
 
 /**
  *  0 init

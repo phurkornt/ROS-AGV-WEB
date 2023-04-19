@@ -10,8 +10,8 @@ var ros = new ROSLIB.Ros({
 // Create the main viewer.
  var viewer = new ROS2D.Viewer({
   divID : 'nav',
-  width : 500,
-  height : 500
+  width : 600,
+  height : 600
 });
 
 var gridClient = new ROS2D.OccupancyGridClient({
@@ -56,13 +56,11 @@ var gridClient = new ROS2D.OccupancyGridClient({
   }
 
   var nav = NAV2D.OccupancyGridClientNav({
-    
     ros : ros,
     rootObject : viewer.scene,
     viewer : viewer,
     serverName:'move_base',
     withOrientation:true
-
   });
 
   
@@ -168,28 +166,18 @@ function getMousePos(canvas, evt) {
     })
 
     document.querySelector('#m-b').addEventListener('click',function(){
-      // clearInterval(timer);
-      // timer = setInterval(function () {
         const [lin,ang] = getSpeed();
         move(-lin, 0);
-      // }, 50);
     })
     document.querySelector('#m-l').addEventListener('click',function(){
-      // clearInterval(timer);
-      // timer = setInterval(function () {
         const [lin,ang] = getSpeed();
         move(0, ang);
-      // }, 50);
     })
     document.querySelector('#m-r').addEventListener('click',function(){
-      // clearInterval(timer);
-      // timer = setInterval(function () {
         const [lin,ang] = getSpeed();
         move(0,-ang);
-      // }, 50);
     })
     document.querySelector('#m-s').addEventListener('click',function(){
-      // clearInterval(timer);
       move(0, 0);
     })
 
